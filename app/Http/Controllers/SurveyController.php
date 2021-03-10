@@ -6,6 +6,7 @@ use App\Models\BasicSurvey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class SurveyController extends Controller
 {
@@ -36,5 +37,17 @@ class SurveyController extends Controller
         $request->session()->flash('flash.bannerStyle', 'success');*/
         return response($survey,201);
 
+    }
+    public function fill(Request $request,$surveyString){
+        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
+            abort(404);
+        }
+        return Inertia::render('AnswerBasicSurvey/Container');
+    }
+    public function getSurvey(Request $request){
+        $validated = $request->validate([
+            'surveyString' => 'required',
+        ]);
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->first();
     }
 }

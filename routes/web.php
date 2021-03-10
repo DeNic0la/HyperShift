@@ -31,5 +31,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
 })->name('create');
+Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
 
 Route::middleware('auth:sanctum')->post('/createSurvey',[SurveyController::class , 'create']);
+
+Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);

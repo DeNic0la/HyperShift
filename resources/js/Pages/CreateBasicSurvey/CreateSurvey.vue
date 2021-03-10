@@ -61,13 +61,12 @@
                     </div>
                     <div class="flex flex-col mb-4 md:mx-10">
                         <button @click="createSurvey" class="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded object-none object-center">
-                            Create a Survey
+                            Umfrage erstellen
                         </button>
                     </div>
 
                 </div>
             </div>
-
         </div>
     </app-layout>
 
@@ -125,7 +124,7 @@ export default {
                         console.log(response.data['url_string']);
                         this.url_string = response.data['url_string'];
                         this.showMessage = true;
-                        this.toCopy = document.getElementById("baseURL").value +'/survey/fill'+this.url_string;
+                        this.toCopy = document.getElementById("baseURL").value +'/survey/fill/'+this.url_string;
                     }else{
                         this.creatingFailed = true;
                         setTimeout(() => {
