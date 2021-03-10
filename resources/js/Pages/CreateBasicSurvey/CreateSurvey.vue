@@ -6,6 +6,47 @@
             </h2>
         </template>
 
+        <confirmation-modal @close="creatingFailed = false" :show="creatingFailed">
+            <template #title>
+                Fehler
+            </template>
+
+            <template #content>
+                Beim erstellen der Umfrage ist ein Fehler aufgetreten
+            </template>
+
+            <template #footer>
+                <secondary-button @click.native="goHome">
+                    Home
+                </secondary-button>
+            </template>
+        </confirmation-modal>
+
+        <dialog-modal  :show="showMessage" @close="goHome">
+            <template #title>
+                Umfrage wurde erstellt!
+            </template>
+
+            <template #content>
+
+                <div class="relative text-gray-600 focus-within:text-gray-400">
+
+                    <input type="text" id="copyValue" :value="toCopy" class="py-2 text-sm rounded-md w-2/3 pl-2 focus:outline-none focus:bg-white focus:text-gray-900">
+                    <button @click="copyCode" :class="buttonStyles" class="font-semibold py-2 px-4 ml-5 border rounded">
+                        {{buttonText}}
+                    </button>
+
+                </div>
+
+            </template>
+
+            <template #footer>
+                <secondary-button @click.native="goHome">
+                    Home
+                </secondary-button>
+            </template>
+        </dialog-modal>
+
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
@@ -28,32 +69,52 @@
             </div>
 
         </div>
-
-
     </app-layout>
+
+
 
 </template>
 
 <script>
 import AppLayout from "../../Layouts/AppLayout";
 import ActionMessage from "../../Jetstream/ActionMessage";
+import ConfirmationModal from "../../Jetstream/ConfirmationModal";
+import DialogModal from "../../Jetstream/DialogModal";
 export default {
     name: "CreateSurvey",
     components: {
+        DialogModal,
+        ConfirmationModal,
         ActionMessage,
         AppLayout,
     },
     data: function () {
         return{
-            surveyName: "Name der Umfrage",
+            surveyName: "",
             errors: [],
-            showMessage: true,
+            showMessage: false,
+            url_string: "",
+            creatingFailed: false,
+            toCopy: "",
+            buttonStyles: {
+                'bg-transparent':true,
+                'hover:bg-blue-500':true,
+                'text-blue-700':true,
+                'hover:text-white': true,
+                'border-blue-500':true,
+                'hover:border-transparent':true,
+                'bg-opacity-75': false,
+                'bg-green-700': false,
+                'text-gray-800':false,
+            },
+            buttonText: "Kopieren",
+
         }
     },
     methods:{
         createSurvey(){
             this.errors = [];
-            if (this.surveyName === "Name der Umfrage"){
+            if (this.surveyName === ""){
                 this.errors.push("Ungültiger Umfragename")
             }
             else{
@@ -61,17 +122,74 @@ export default {
                     name: this.surveyName,
                 }).then( response =>{
                     if (response.status === 201){
-                        alert("Everything is Okey")
+                        console.log(response.data['url_string']);
+                        this.url_string = response.data['url_string'];
+                        this.showMessage = true;
+                        this.toCopy = document.getElementById("baseURL").value +'/survey/fill'+this.url_string;
                     }else{
-                        alert("Something went wrong i can feel it.");
+                        this.creatingFailed = true;
+                        setTimeout(() => {
+                            this.creatingFailed = false;
+                        }, 10*1000)
                     }
                 });
             }
+        },
+        goHome(){
+            window.location.href = '/dashboard'
+        },
+        copyCode(){
+            //this.toCopy  =
+            let testingCodeToCopy = document.querySelector('#copyValue')
+            testingCodeToCopy.select()
+
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+
+                this.buttonStyles = this.negateAllValues(this.buttonStyles);
+                this.buttonText = "Text Kopiert";
+                setTimeout(() => {
+                    this.buttonStyles = this.negateAllValues(this.buttonStyles);
+                    this.buttonText = "Kopieren";
+                }, 3*1000)
+
+            } catch (err) {
+                alert('Oops, unable to copy');
+            }
+
+            /* unselect the range */
+            window.getSelection().removeAllRanges()
+        },negateAllValues(obj){
+            Object.keys(obj).forEach(function(key){ obj[key] = !obj[key] });
+            return obj;
         }
     }
 }
 </script>
 
 <style scoped>
-
+.tooltip {
+    width: 200px;
+    background: #59c7f9;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 20px 10px 20px;
+    border-radius: 23px;
+    top: calc(100% + 11px);
+    left: 50%;
+    transform: translate-x(-50%)
+}
+.tooltip-box {
+    position: relative
+}
+.triangle {
+    border-width: 0 6px 6px;
+    border-color: transparent;
+    border-bottom-color: #59c7f9;
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translate-x(-50%)
+}
 </style>

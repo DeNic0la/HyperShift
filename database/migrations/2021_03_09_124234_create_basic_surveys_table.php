@@ -16,7 +16,8 @@ class CreateBasicSurveysTable extends Migration
         Schema::create('basic_surveys', function (Blueprint $table) {
             $table->id();
             $table->string('survey_name');
-            $table->foreignId('owner_id');
+            $table->string('url_string');
+            $table->foreignId('owner_id')->nullable();
             $table->timestamps();
 
         });
