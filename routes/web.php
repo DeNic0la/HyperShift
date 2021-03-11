@@ -20,16 +20,16 @@ Route::get('/', function () {
     return Inertia::render('Dashboard');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::get('/dashboard', function () {
     abort(404);
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/create', function () {
+Route::get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
 })->name('create');
 Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
 
-Route::middleware('auth:sanctum')->post('/createSurvey',[SurveyController::class , 'create']);
+Route::post('/createSurvey',[SurveyController::class , 'create']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
 
