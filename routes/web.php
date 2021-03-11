@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SurveyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,3 +28,11 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/create', function () {
+    return Inertia::render('CreateBasicSurvey/CreateSurvey');
+})->name('create');
+Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
+
+Route::middleware('auth:sanctum')->post('/createSurvey',[SurveyController::class , 'create']);
+
+Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);

@@ -18,6 +18,8 @@
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        @inertia
+    <input type="hidden" value="{{ url('/') }}" id="baseURL" />
+
+    @inertia
     </body>
 </html>
