@@ -15,4 +15,9 @@ class BasicSurvey extends Model
     public function user(){
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    public function terminfrages(){
+        return $this->hasMany(TerminFrage::class, 'surveyId');
+    }
+
 }

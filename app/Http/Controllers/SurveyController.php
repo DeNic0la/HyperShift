@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BasicSurvey;
+use App\Models\TerminFrage;
+use App\Models\Termin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,9 +15,8 @@ class SurveyController extends Controller
     public function create(Request $request){
         $validated = $request->validate([
             'name' => 'required',
+            'questions' => 'required',
         ]);
-
-
         //TODO REMOVE THIS, THIS IS ONLY DEV
         if (app()->environment(['local','dev'])){
             if ($validated['name'] == 'DoError'){
@@ -32,9 +33,32 @@ class SurveyController extends Controller
             'survey_name' => $validated['name'],
             'url_string' => $randomString,
         ]);
-        /*
-        $request->session()->flash('flash.banner', 'Yay it works!');
-        $request->session()->flash('flash.bannerStyle', 'success');*/
+
+        $Questions = $request['questions'];
+        foreach ($Questions as $question){
+            if ($question['type'] == 1){
+                $toSave= new TerminFrage([
+                    'name' => $question['name']
+                ]);
+                $QuestionInDB = $survey->terminfrages()->save($toSave);
+                foreach ($question['options'] as $option) {
+                    if ($option['datetime'] == null || $option['duration'] == null){
+
+                    }
+                    else{
+                        $Termin = new Termin([
+                            'time' => $option['datetime'],
+                            'duration' => $option['duration']
+                        ]);
+                        $Termin = $QuestionInDB->termins()->save($Termin);
+                    }
+                }
+            }
+        }
+
+
+
+
         return response($survey,201);
 
     }

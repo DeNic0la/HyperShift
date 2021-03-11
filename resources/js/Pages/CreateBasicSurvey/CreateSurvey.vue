@@ -47,6 +47,8 @@
             </template>
         </dialog-modal>
 
+
+
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
@@ -59,6 +61,13 @@
                         <label class="mb-2 font-bold text-lg text-grey-darkest" for="SurveyName">Name der Umfrage:</label>
                         <input type="text" v-model="surveyName" id="SurveyName" class="border py-2 px-3 text-grey-darkest" name="name">
                     </div>
+                    <div class="flex flex-col mb-4 md:mx-10">
+                        <QuestionManager :questions="questions">
+
+                        </QuestionManager>
+                    </div>
+
+
                     <div class="flex flex-col mb-4 md:mx-10">
                         <button @click="createSurvey" class="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded object-none object-center">
                             Umfrage erstellen
@@ -79,9 +88,11 @@ import AppLayout from "../../Layouts/AppLayout";
 import ActionMessage from "../../Jetstream/ActionMessage";
 import ConfirmationModal from "../../Jetstream/ConfirmationModal";
 import DialogModal from "../../Jetstream/DialogModal";
+import QuestionManager from "./QuestionManager";
 export default {
     name: "CreateSurvey",
     components: {
+        QuestionManager,
         DialogModal,
         ConfirmationModal,
         ActionMessage,
@@ -107,18 +118,17 @@ export default {
                 'text-gray-800':false,
             },
             buttonText: "Kopieren",
+            questions: [],
 
         }
     },
     methods:{
         createSurvey(){
             this.errors = [];
-            if (this.surveyName === ""){
-                this.errors.push("Ungültiger Umfragename")
-            }
-            else{
+            if (this.validateFields()){
                 axios.post('/createSurvey',{
                     name: this.surveyName,
+                    questions: this.questions,
                 }).then( response =>{
                     if (response.status === 201){
                         console.log(response.data['url_string']);
@@ -133,6 +143,9 @@ export default {
                     }
                 });
             }
+        },
+        validateFields(){
+            return true;
         },
         goHome(){
             window.location.href = '/dashboard'

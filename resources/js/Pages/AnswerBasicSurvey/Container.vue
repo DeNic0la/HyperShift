@@ -13,6 +13,7 @@
 
                     </SurveyDisplayer>
 
+
                     <div class="flex flex-col mb-4 md:mx-10">
                         <button class="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded object-none object-center">
                             Antwort absenden
