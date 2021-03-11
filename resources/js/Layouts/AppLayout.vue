@@ -10,14 +10,14 @@
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
-                                <inertia-link :href="route('dashboard')">
+                                <inertia-link href="/">
                                     <jet-application-mark class="block h-9 w-auto" />
                                 </inertia-link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
+                                <jet-nav-link href="/" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('create')" :active="route().current('create')">
@@ -84,7 +84,7 @@
 
                             <!-- Settings Dropdown -->
                             <div class="ml-3 relative">
-                                <jet-dropdown align="right" width="48">
+                                <jet-dropdown align="right" width="48" v-if="$page.props.user">
                                     <template #trigger>
                                         <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
                                             <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
@@ -92,7 +92,7 @@
 
                                         <span v-else class="inline-flex rounded-md">
                                             <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                                {{ $page.props.user.name }}
+                                                {{ $page.props.user?.name ??'Guest' }}
 
                                                 <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -125,6 +125,16 @@
                                         </form>
                                     </template>
                                 </jet-dropdown>
+
+                                <div v-else class="top-0 px-6 py-4 sm:block">
+                                        <inertia-link :href="route('login')" class="text-sm text-gray-700 underline">
+                                            Log in
+                                        </inertia-link>
+
+                                        <inertia-link :href="route('register')" class="ml-4 text-sm text-gray-700 underline">
+                                            Register
+                                        </inertia-link>
+                                </div>
                             </div>
                         </div>
 
@@ -155,30 +165,42 @@
                     <div class="pt-4 pb-1 border-t border-gray-200">
                         <div class="flex items-center px-4">
                             <div v-if="$page.props.jetstream.managesProfilePhotos" class="flex-shrink-0 mr-3" >
-                                <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user.name" />
+                                <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.user.profile_photo_url" :alt="$page.props.user?.name" />
                             </div>
 
                             <div>
-                                <div class="font-medium text-base text-gray-800">{{ $page.props.user.name }}</div>
-                                <div class="font-medium text-sm text-gray-500">{{ $page.props.user.email }}</div>
+                                <div class="font-medium text-base text-gray-800">{{ $page.props.user?.name }}</div>
+                                <div class="font-medium text-sm text-gray-500">{{ $page.props.user?.email }}</div>
                             </div>
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
-                            </jet-responsive-nav-link>
-
-                            <jet-responsive-nav-link :href="route('api-tokens.index')" :active="route().current('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
-                                API Tokens
-                            </jet-responsive-nav-link>
-
-                            <!-- Authentication -->
-                            <form method="POST" @submit.prevent="logout">
-                                <jet-responsive-nav-link as="button">
-                                    Log Out
+                            <div v-if="$page.props.user">
+                                <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
+                                    Profile
                                 </jet-responsive-nav-link>
-                            </form>
+
+                                <jet-responsive-nav-link :href="route('api-tokens.index')" :active="route().current('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
+                                    API Tokens
+                                </jet-responsive-nav-link>
+
+                                <!-- Authentication -->
+                                <form method="POST" @submit.prevent="logout">
+                                    <jet-responsive-nav-link as="button">
+                                        Log Out
+                                    </jet-responsive-nav-link>
+                                </form>
+                            </div>
+
+                            <div v-else>
+                                <jet-responsive-nav-link :href="route('login')">
+                                    Log in
+                                </jet-responsive-nav-link>
+
+                                <jet-responsive-nav-link :href="route('register')">
+                                    Register
+                                </jet-responsive-nav-link>
+                            </div>
 
                             <!-- Team Management -->
                             <template v-if="$page.props.jetstream.hasTeamFeatures">

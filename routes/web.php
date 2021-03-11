@@ -17,17 +17,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Dashboard');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    abort(404);
 })->name('dashboard');
+
 Route::middleware(['auth:sanctum', 'verified'])->get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
 })->name('create');
@@ -36,3 +32,4 @@ Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->n
 Route::middleware('auth:sanctum')->post('/createSurvey',[SurveyController::class , 'create']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
+
