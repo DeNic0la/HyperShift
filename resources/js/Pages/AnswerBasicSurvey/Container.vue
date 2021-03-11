@@ -9,10 +9,13 @@
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
-                    <SurveyDisplayer :name="survey['survey_name']" :creator="survey['user']['name']">
+                    <SurveyDisplayer :name="survey['survey_name']" :creator="survey.user?.name">
 
                     </SurveyDisplayer>
 
+                    <AnswerManager :answers="answers" :questions="survey['terminfrages']">
+
+                    </AnswerManager>
 
                     <div class="flex flex-col mb-4 md:mx-10">
                         <button class="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded object-none object-center">
@@ -31,9 +34,11 @@
 <script>
 import SurveyDisplayer from "./SurveyDisplayer";
 import AppLayout from "../../Layouts/AppLayout";
+import AnswerManager from "./AnswerManager";
 export default {
     name: "Container",
     components: {
+        AnswerManager,
         SurveyDisplayer,
         AppLayout
     },
@@ -41,10 +46,11 @@ export default {
         return {
             surveyString: "",
             survey: [],
+            answers: [],
         }
     },
     created() {
-        const url = window.location.href;
+        let url = window.location.href;
         this.surveyString = url.split('/').pop();
         axios.get('/getSurvey',{
             params: {
@@ -55,6 +61,7 @@ export default {
                 this. survey = response.data;
             }
         })
+
     }
 
 }

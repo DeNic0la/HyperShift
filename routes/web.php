@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    return redirect('/');
     abort(404);
 })->name('dashboard');
 
