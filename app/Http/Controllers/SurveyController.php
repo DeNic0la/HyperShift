@@ -74,4 +74,18 @@ class SurveyController extends Controller
         ]);
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('terminfrages')->with('terminfrages.termins')->first();
     }
+    public function answerSurvey(Request $request){
+        $validated = $request->validate([
+            'answers' => 'required',
+            'survey' => 'required',
+        ]);
+        if (BasicSurvey::where('url_string', '=', $validated['survey'])->count() == 0){
+            abort(404);
+        }
+
+        $Survey = BasicSurvey::where('url_string', '=', $validated['survey'])->first();
+
+
+        return 'Helikopter';
+    }
 }

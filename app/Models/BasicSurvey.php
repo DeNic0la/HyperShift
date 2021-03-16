@@ -20,4 +20,8 @@ class BasicSurvey extends Model
         return $this->hasMany(TerminFrage::class, 'surveyId');
     }
 
+    public function basicanswers(){
+        return $this->hasMany(BasicAnswer::class, 'surveyId');
+    }
+
 }

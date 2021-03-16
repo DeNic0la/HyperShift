@@ -34,3 +34,5 @@ Route::post('/createSurvey',[SurveyController::class , 'create']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
 
+Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey']);
+
