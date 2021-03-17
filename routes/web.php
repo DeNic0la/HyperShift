@@ -33,3 +33,11 @@ Route::post('/createSurvey',[SurveyController::class , 'create']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
 
+
+
+
+Route::get('/MySurveys', function () {
+    return Inertia::render('MySurveys/MySurveys');
+})->name('MySurveys');
+
+Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);

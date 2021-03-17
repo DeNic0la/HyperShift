@@ -74,4 +74,8 @@ class SurveyController extends Controller
         ]);
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->first();
     }
+    public function getUserSurveys(){
+        $userId = Auth::id();
+        return BasicSurvey::where('owner_id', '=', $userId)->get();
+    }
 }
