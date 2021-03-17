@@ -1,5 +1,6 @@
 <template>
     <div class="flex flex-col mb-4 md:mx-10">
+
         <div v-for="(question, index) in questions">
             <AnswerTerminQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 

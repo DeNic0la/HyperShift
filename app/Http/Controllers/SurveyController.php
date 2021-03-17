@@ -79,6 +79,7 @@ class SurveyController extends Controller
         $validated = $request->validate([
             'answers' => 'required',
             'survey' => 'required',
+            'name' => ''
         ]);
         if (BasicSurvey::where('url_string', '=', $validated['survey'])->count() == 0){
             abort(404);
@@ -87,7 +88,7 @@ class SurveyController extends Controller
         $Survey = BasicSurvey::where('url_string', '=', $validated['survey'])->first();
         $Answer = $Survey->basicanswers()->create([
             'fillerId' => Auth::id(),
-            'fillerName' => 'NotWorkingYet'
+            'fillerName' => $validated['name'] == "" ? null:$validated['name'],
         ]);
         foreach ($validated['answers'] as $item){
             $Answer->terminanswers()->create([

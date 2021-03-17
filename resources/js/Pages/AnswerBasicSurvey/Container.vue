@@ -13,6 +13,14 @@
 
                     </SurveyDisplayer>
 
+                    <label v-if="$page.props.user == null">
+                        <div class="flex flex-col mb-4 md:mx-10">
+                            <div class="mb-2 text-grey-darkest">Dein Name: </div>
+                            <input type="text" v-model="name">
+
+                        </div>
+                    </label>
+
                     <AnswerManager :answers="answers" :questions="survey['terminfrages']" @CheckboxTicked="updateArray($event)">
 
                     </AnswerManager>
@@ -47,6 +55,7 @@ export default {
             surveyString: "",
             survey: [],
             answers: [],
+            name: "",
         }
     },
     methods:{
@@ -57,7 +66,12 @@ export default {
             axios.post('/answerSurvey',null,{
                 params:{
                     answers: this.answers,
-                    survey: this.survey.url_string
+                    survey: this.survey.url_string,
+                    name: this.name,
+                }
+            }).then(response => {
+                if (response.status === 200){
+                    window.location.href = '/';
                 }
             })
         },
