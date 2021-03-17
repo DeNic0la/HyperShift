@@ -119,7 +119,6 @@ export default {
             },
             buttonText: "Kopieren",
             questions: [],
-
         }
     },
     methods:{
@@ -148,7 +147,7 @@ export default {
             return true;
         },
         goHome(){
-            window.location.href = '/dashboard'
+            window.location.href = '/'
         },
         copyCode(){
             //this.toCopy  =
