@@ -5,7 +5,7 @@
 
             <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
                 <div v-for="(option,index) in question.termins">
-                    <termin-ticker :option="option" :answer="answer">
+                    <termin-ticker :option="option" :answer="answer" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 
                     </termin-ticker>
                 </div>
@@ -24,6 +24,7 @@ export default {
     name: "AnswerTerminQuestion",
     components: {TerminTicker},
     props: ['question', 'answer'],
+    emits: ['CheckboxTicked'],
     methods: {
 
     },

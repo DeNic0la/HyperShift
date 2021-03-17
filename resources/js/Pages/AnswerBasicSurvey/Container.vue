@@ -13,7 +13,7 @@
 
                     </SurveyDisplayer>
 
-                    <AnswerManager :answers="answers" :questions="survey['terminfrages']">
+                    <AnswerManager :answers="answers" :questions="survey['terminfrages']" @CheckboxTicked="updateArray($event)">
 
                     </AnswerManager>
 
@@ -61,6 +61,19 @@ export default {
                 }
             })
         },
+        updateArray(id){
+
+            console.log(id);
+            if (this.answers.includes(id)){
+                this.answers.splice( this.answers.indexOf(id), 1);
+            }
+            else {
+                this.answers.push(id);
+            }
+
+            const index = array.indexOf(element);
+            array.splice(index, 1);
+        }
     },
     created() {
         let url = window.location.href;
