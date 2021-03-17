@@ -15,6 +15,9 @@ class CreateBasicAnswersTable extends Migration
     {
         Schema::create('basic_answers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('surveyId');
+            $table->foreignId('fillerId')->nullable();
+            $table->string('fillerName')->nullable();
             $table->timestamps();
         });
     }

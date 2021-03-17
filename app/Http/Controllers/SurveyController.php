@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\TerminFrage;
 use App\Models\Termin;
@@ -84,8 +85,17 @@ class SurveyController extends Controller
         }
 
         $Survey = BasicSurvey::where('url_string', '=', $validated['survey'])->first();
+        $Answer = $Survey->basicanswers()->create([
+            'fillerId' => Auth::id(),
+            'fillerName' => 'NotWorkingYet'
+        ]);
+        foreach ($validated['answers'] as $item){
+            $Answer->terminanswers()->create([
+                'terminId' => $item
+            ]);
+        }
 
 
-        return 'Helikopter';
+        return $request;
     }
 }

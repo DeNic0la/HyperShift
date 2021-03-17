@@ -15,6 +15,8 @@ class CreateTerminAnswersTable extends Migration
     {
         Schema::create('termin_answers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('answerId')->nullable();
+            $table->foreignId('terminId')->nullable();
             $table->timestamps();
         });
     }

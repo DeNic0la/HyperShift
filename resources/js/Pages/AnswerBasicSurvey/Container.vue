@@ -54,8 +54,8 @@ export default {
         ){
             //ValidateAnswersHereIfneeded
 
-            axios.post('/answerSurvey',{
-                param:{
+            axios.post('/answerSurvey',null,{
+                params:{
                     answers: this.answers,
                     survey: this.survey.url_string
                 }
