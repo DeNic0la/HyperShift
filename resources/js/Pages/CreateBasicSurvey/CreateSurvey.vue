@@ -119,7 +119,6 @@ export default {
             },
             buttonText: "Kopieren",
             questions: [],
-
         }
     },
     methods:{

@@ -99,4 +99,8 @@ class SurveyController extends Controller
 
         return $request;
     }
+    public function getUserSurveys(){
+        $userId = Auth::id();
+        return BasicSurvey::where('owner_id', '=', $userId)->get();
+    }
 }
