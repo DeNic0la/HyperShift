@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\TerminFrage;
 use App\Models\Termin;
@@ -72,7 +73,31 @@ class SurveyController extends Controller
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
-        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->first();
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('terminfrages')->with('terminfrages.termins')->first();
+    }
+    public function answerSurvey(Request $request){
+        $validated = $request->validate([
+            'answers' => 'required',
+            'survey' => 'required',
+            'name' => ''
+        ]);
+        if (BasicSurvey::where('url_string', '=', $validated['survey'])->count() == 0){
+            abort(404);
+        }
+
+        $Survey = BasicSurvey::where('url_string', '=', $validated['survey'])->first();
+        $Answer = $Survey->basicanswers()->create([
+            'fillerId' => Auth::id(),
+            'fillerName' => $validated['name'] == "" ? null:$validated['name'],
+        ]);
+        foreach ($validated['answers'] as $item){
+            $Answer->terminanswers()->create([
+                'terminId' => $item
+            ]);
+        }
+
+
+        return $request;
     }
     public function getUserSurveys(){
         $userId = Auth::id();

@@ -21,6 +21,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    return redirect('/');
     abort(404);
 })->name('dashboard');
 
@@ -32,6 +33,10 @@ Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->n
 Route::post('/createSurvey',[SurveyController::class , 'create']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
+
+
+Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey']);
+
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
     return Inertia::render('MySurveys/MySurveys');
