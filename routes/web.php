@@ -44,3 +44,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
 })->name('MySurveys');
 
 Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);
+
+Route::get('/survey/results/{surveyString}', [SurveyController::class , 'results'])->name('results');
+
+Route::get('/getResults',[SurveyController::class , 'getResults']);

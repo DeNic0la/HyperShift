@@ -156,4 +156,18 @@ class SurveyController extends Controller
         $userId = Auth::id();
         return BasicSurvey::where('owner_id', '=', $userId)->get();
     }
+
+    public function results(Request $request,$surveyString){
+        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
+            abort(404);
+        }
+        return Inertia::render('SurveyResults/SurveyResults');
+    }
+
+    public function getResults(Request $request, $surveyString){
+        $validated = $request->validate([
+            'surveyString' => 'required',
+        ]);
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('terminfrages')->with('terminfrages.termins')->first();
+    }
 }
