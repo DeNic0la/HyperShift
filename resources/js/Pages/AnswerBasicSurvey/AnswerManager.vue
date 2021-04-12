@@ -2,18 +2,19 @@
     <div class="flex flex-col mb-4 md:mx-10">
 
         <div v-for="(question, index) in questions">
-            <AnswerTerminQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 
-            </AnswerTerminQuestion>
+            <AnswerQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
+
+            </AnswerQuestion>
         </div>
     </div>
 </template>
 
 <script>
-import AnswerTerminQuestion from "./AnswerTerminQuestion";
+import AnswerQuestion from "./AnswerQuestion";
 export default {
     name: "AnswerManager",
-    components: {AnswerTerminQuestion},
+    components: {AnswerQuestion},
     props: ['questions','answers'],
     emits: ['CheckboxTicked'],
 
