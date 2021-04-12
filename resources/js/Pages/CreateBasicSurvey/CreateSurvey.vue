@@ -140,7 +140,7 @@ export default {
                         console.log(response.data['url_string']);
                         this.url_string = response.data['url_string'];
                         this.showMessage = true;
-                        this.toCopy = document.getElementById("baseURL").getAttribute('content') +'/survey/fill/'+this.url_string;
+                        this.toCopy = document.getElementById("baseURL").getAttribute('content') + (pressedButton === 1 ? '/survey/fill/':'/host/' )+this.url_string;
                     }else{
                         this.creatingFailed = true;
                         setTimeout(() => {
