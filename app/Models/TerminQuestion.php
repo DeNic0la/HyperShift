@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TerminFrage extends Model
+class TerminQuestion extends Model
 {
     use HasFactory;
 
     protected $fillable = ['name'];
 
-    public function basicsurvey(){
-        return $this->belongsTo(BasicSurvey::class, 'surveyId', 'id');
+    public function question(){
+        return $this->hasOne(Question::class, 'Id', 'questionId');
     }
     public function termins(){
-        return $this->hasMany(Termin::class, 'terminFrageId');
+        return $this->hasMany(Termin::class, 'terminQuestionId');
     }
 }

@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Umfrage erstellen
+                Blueprint erstellen
             </h2>
         </template>
 
@@ -69,40 +69,33 @@
 
 
                     <div class="flex flex-col mb-4 md:mx-10">
-                        <div class="flex justify-around items-stretch px-12">
-                            <button @click="createSurvey(1)" class="block mx-auto bg-pink-500 border border-pink-800 hover:bg-pink-700 text-white font-bold py-4 px-10 rounded object-none object-center">
-                                Umfrage erstellen
-                            </button>
-                            <button @click="createSurvey(2)" class="block mx-auto bg-blue-500 border border-blue-800 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded object-none object-center">
-                                Blueprint erstellen
-                            </button>
-                        </div>
+                        <button @click="createSurvey" class="block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded object-none object-center">
+                            Umfrage erstellen
+                        </button>
                     </div>
 
                 </div>
             </div>
         </div>
     </app-layout>
-
-
-
 </template>
-
 <script>
-import AppLayout from "../../Layouts/AppLayout";
-import ActionMessage from "../../Jetstream/ActionMessage";
-import ConfirmationModal from "../../Jetstream/ConfirmationModal";
+
 import DialogModal from "../../Jetstream/DialogModal";
+import ConfirmationModal from "../../Jetstream/ConfirmationModal";
+import ActionMessage from "../../Jetstream/ActionMessage";
+import AppLayout from "../../Layouts/AppLayout";
 import QuestionManager from "./QuestionManager";
+
 export default {
-    name: "CreateSurvey",
     components: {
-        QuestionManager,
         DialogModal,
         ConfirmationModal,
         ActionMessage,
         AppLayout,
+        QuestionManager,
     },
+    name: "Container",
     data: function () {
         return{
             surveyName: "",
@@ -127,12 +120,10 @@ export default {
         }
     },
     methods:{
-        createSurvey(pressedButton ){
+        createSurvey(){
             this.errors = [];
-            if (this.validateFields() && (pressedButton === 1 || pressedButton === 2)){
-                const url = pressedButton === 1 ? '/createSurvey': '/createBlueprint';
-
-                axios.post(url,{
+            if (this.validateFields()){
+                axios.post('/createSurvey',{
                     name: this.surveyName,
                     questions: this.questions,
                 }).then( response =>{

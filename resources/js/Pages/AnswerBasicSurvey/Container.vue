@@ -21,7 +21,7 @@
                         </div>
                     </label>
 
-                    <AnswerManager :answers="answers" :questions="survey['terminfrages']" @CheckboxTicked="updateArray($event)">
+                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateArray($event)">
 
                     </AnswerManager>
 

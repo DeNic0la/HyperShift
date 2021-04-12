@@ -31,6 +31,7 @@ Route::get('/create', function () {
 Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
 
 Route::post('/createSurvey',[SurveyController::class , 'create']);
+Route::post('/createBlueprint',[SurveyController::class , 'createBluePrint']);
 
 Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
 
