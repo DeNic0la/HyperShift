@@ -11,6 +11,6 @@ class Termin extends Model
     protected $fillable = ['time','duration'];
 
     public function terminfrage(){
-        return $this->belongsTo(TerminFrage::class, 'terminFrageId');
+        return $this->belongsTo(TerminQuestion::class, 'terminFrageId');
     }
 }

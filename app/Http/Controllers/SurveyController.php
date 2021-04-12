@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
-use App\Models\TerminFrage;
+use App\Models\BluePrint;
+use App\Models\Question;
+use App\Models\TerminQuestion;
 use App\Models\Termin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +30,7 @@ class SurveyController extends Controller
         $randomString = "";
         do {
             $randomString = Str::random(15);
-        }while(BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
         $survey = BasicSurvey::create([
             'owner_id' => Auth::id(),
             'survey_name' => $validated['name'],
@@ -37,11 +39,12 @@ class SurveyController extends Controller
 
         $Questions = $request['questions'];
         foreach ($Questions as $question){
+            $BaseQuestion = $survey->questions()->create();
             if ($question['type'] == 1){
-                $toSave= new TerminFrage([
+                $toSave= new TerminQuestion([
                     'name' => $question['name']
                 ]);
-                $QuestionInDB = $survey->terminfrages()->save($toSave);
+                $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
                 foreach ($question['options'] as $option) {
                     if ($option['datetime'] == null || $option['duration'] == null){
 
@@ -63,6 +66,56 @@ class SurveyController extends Controller
         return response($survey,201);
 
     }
+
+    public function createBluePrint(Request $request){
+        $validated = $request->validate([
+            'name' => 'required',
+            'questions' => 'required',
+        ]);
+        //TODO REMOVE THIS, THIS IS ONLY DEV
+        if (app()->environment(['local','dev'])){
+            if ($validated['name'] == 'DoError'){
+                return response('Error for Development',200);
+            }
+        }
+
+        $randomString = "";
+        do {
+            $randomString = Str::random(15);
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        $survey = BluePrint::create([
+            'owner_id' => Auth::id(),
+            'survey_name' => $validated['name'],
+            'url_string' => $randomString,
+        ]);
+
+        $Questions = $request['questions'];
+        foreach ($Questions as $question){
+            $BaseQuestion = $survey->questions()->create();
+            if ($question['type'] == 1){
+                $toSave= new TerminQuestion([
+                    'name' => $question['name']
+                ]);
+                $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
+                foreach ($question['options'] as $option) {
+                    if ($option['datetime'] == null || $option['duration'] == null){
+
+                    }
+                    else{
+                        $Termin = new Termin([
+                            'time' => $option['datetime'],
+                            'duration' => $option['duration']
+                        ]);
+                        $Termin = $QuestionInDB->termins()->save($Termin);
+                    }
+                }
+            }
+        }
+
+
+        return response($survey,201);
+    }
+
     public function fill(Request $request,$surveyString){
         if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
             abort(404);
@@ -73,7 +126,7 @@ class SurveyController extends Controller
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
-        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('terminfrages')->with('terminfrages.termins')->first();
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->first();
     }
     public function answerSurvey(Request $request){
         $validated = $request->validate([

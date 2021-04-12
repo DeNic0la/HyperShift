@@ -13,9 +13,9 @@ class CreateTerminFragesTable extends Migration
      */
     public function up()
     {
-        Schema::create('termin_frages', function (Blueprint $table) {
+        Schema::create('termin_questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('surveyId');
+            $table->foreignId('questionId');
             $table->string('name');
             $table->timestamps();
         });
@@ -28,6 +28,7 @@ class CreateTerminFragesTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('termin_questions');
         Schema::dropIfExists('termin_frages');
     }
 }
