@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\Question;
+use App\Models\TerminAnswer;
 use App\Models\TerminQuestion;
 use App\Models\Termin;
 use Illuminate\Http\Request;
@@ -161,13 +162,21 @@ class SurveyController extends Controller
         if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
             abort(404);
         }
-        return Inertia::render('SurveyResults/SurveyResults');
+        return Inertia::render('SurveyResults/Container');
     }
 
-    public function getResults(Request $request, $surveyString){
+    public function getResults(Request $request){
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
-        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('terminfrages')->with('terminfrages.termins')->first();
+        /*return BasicAnswer::where('surveyId', '=', $validated['surveyId'])->with('user')->with('terminanswers')
+            ->with('basicsurvey')->with('basicsurvey.user')
+            ->with('basicsurvey.questions')->with('basicsurvey.questions.terminquestion')
+            ->with('basicsurvey.questions.terminquestion.termins')
+            ->with('terminanswers.termin')->get();*/
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')
+            ->with('basicanswers')
+            ->with('basicanswers.user')->with('basicanswers.terminanswers')
+            ->with('basicanswers.terminanswers.termin')->first();
     }
 }

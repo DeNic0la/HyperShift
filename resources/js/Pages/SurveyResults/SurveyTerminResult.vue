@@ -4,10 +4,11 @@
         <div class="mb-2 text-grey-darkest">{{question.name}}</div>
 
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
+            <div v-for="(option,index) in question.termins">
+                <TerminOptions :option="option" :answer="answer">
 
-            <SurveyTerminResult :question="question['terminquestion']" :answer="answers">
-
-            </SurveyTerminResult>
+                </TerminOptions>
+            </div>
 
         </div>
 
@@ -18,14 +19,17 @@
 </template>
 
 <script>
-import SurveyTerminResult from "@/Pages/SurveyResults/SurveyTerminResult";
+import TerminOptions from "@/Pages/SurveyResults/TerminOptions";
 export default {
-    name: "SurveyResults",
-    components: {SurveyTerminResult},
+    name: "SurveyTerminResult",
+    components: {TerminOptions},
     props: ['question', 'answer'],
     methods: {
 
     },
+    beforeCreate() {
+
+    }
 }
 </script>
 
