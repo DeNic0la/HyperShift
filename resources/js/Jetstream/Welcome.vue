@@ -28,7 +28,7 @@
                         With HyperShift you can quickly and easily start a scheduling survey. To do this, you simply need to formulate a question and add any number of date options to it. For each date you can also specify the time and duration of the event.
                     </div>
 
-                    <a href="http://127.0.0.1:8000/create">
+                    <a href="/create">
                         <div class="mt-3 flex items-center text-sm font-semibold text-indigo-700">
                                 <div>Create a datefinding survey</div>
 
