@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\SurveyHostController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -44,3 +45,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
 })->name('MySurveys');
 
 Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);
+
+
+//Host
+Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
+Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
+Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
+
