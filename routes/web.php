@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyHostController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,14 +18,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-});
+Route::get('/', [HomeController::class, 'show']);
 
 Route::get('/dashboard', function () {
-    return redirect('/');
     abort(404);
-})->name('dashboard');
+})->name('dashboard');//TODO REMOVE This
 
 Route::get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
@@ -51,4 +49,9 @@ Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);
 Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
 Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
+//Join
+Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
+
+//Home
+Route::get('/validateKey',[HomeController::class , 'validateJoinKey'])->name('validateKey');
 

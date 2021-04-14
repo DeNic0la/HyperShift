@@ -22,8 +22,11 @@ class SurveyHostController extends Controller
         }
 
         $BluePrint = BluePrint::where('url_string', '=', $bluePrintString);
-        if ($BluePrint->count() == 0 || $BluePrint->first()->user()->first()->id != Auth::id()){
+        if ($BluePrint->count() == 0){
             abort(404);
+        }
+        if ($BluePrint->first()->user()->first() !== Auth::user()){
+            abort(403);
         }
 
         do{
@@ -52,6 +55,15 @@ class SurveyHostController extends Controller
             abort(404);
         Cache::put($Key,$bluePrintString,100);
         return Cache::get($bluePrintString."people");
+    }
+
+    public function join(Request $request,$Key){
+        $bluePrintString = Cache::get($Key);
+        if (!Cache::has($bluePrintString."people")){
+            abort(404);
+        }
+        Cache::increment($bluePrintString.'people');
+        return Inertia::render('LiveSurvey/Container',array('Key' => $Key));
     }
 
 }
