@@ -6,6 +6,7 @@ use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\BluePrint;
 use App\Models\Question;
+use App\Models\TerminAnswer;
 use App\Models\TerminQuestion;
 use App\Models\Termin;
 use Illuminate\Http\Request;
@@ -155,5 +156,22 @@ class SurveyController extends Controller
     public function getUserSurveys(){
         $userId = Auth::id();
         return BasicSurvey::where('owner_id', '=', $userId)->get();
+    }
+
+    public function results(Request $request,$surveyString){
+        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
+            abort(404);
+        }
+        return Inertia::render('SurveyResults/Container');
+    }
+
+    public function getResults(Request $request){
+        $validated = $request->validate([
+            'surveyString' => 'required',
+        ]);
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')
+            ->with('basicanswers')
+            ->with('basicanswers.user')->with('basicanswers.terminanswers')
+            ->with('basicanswers.terminanswers.termin')->first();
     }
 }
