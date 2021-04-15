@@ -4,8 +4,8 @@
          v-bind:style="{ backgroundImage: 'url(' + imageUrl()+ ')' }" @loadeddata="isLoaded = true" v-if="isLoaded">
       <div class="absolute bg-black opacity-60 inset-0 z-0"></div>
       <div class="w-full px-24 z-10">
-        <h1 class="text-5xl font-bold text-left tracking-wide">{{ this.Titel }}</h1>
-        <p class="text-3xl my-4">{{ this.Subtitel }}</p>
+        <h1 class="text-5xl font-bold text-left tracking-wide">{{ this.titel }}</h1>
+        <p class="text-3xl my-4">{{ this.subtitel }}</p>
       </div>
     </div>
       <img v-if="!isLoaded" :src="imageUrl()" @load="imageLoaded()" alt="">
@@ -23,7 +23,7 @@
 <script>
 export default {
   name: 'InfoDisplayer',
-  props:['Titel','Subtitel','imgSrc'],
+  props:['titel','subtitel','imgSrc'],
   methods:{
     imageUrl(){
         return this.imgSrc||this.defaultImgSrc;

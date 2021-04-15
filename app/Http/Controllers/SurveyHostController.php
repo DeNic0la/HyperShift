@@ -25,7 +25,8 @@ class SurveyHostController extends Controller
         if ($BluePrint->count() == 0){
             abort(404);
         }
-        if ($BluePrint->first()->user()->first() !== Auth::user()){
+
+        if ($BluePrint->first()->user() !== null && $BluePrint->first()->user()->first()->id !== Auth::id()){
             abort(403);
         }
 
@@ -63,7 +64,28 @@ class SurveyHostController extends Controller
             abort(404);
         }
         Cache::increment($bluePrintString.'people');
-        return Inertia::render('LiveSurvey/Container',array('Key' => $Key));
+        $BluePrint = BluePrint::where('url_string', '=', $bluePrintString)->with('user')->first();
+        return Inertia::render('LiveSurvey/Container',array(
+            'Key' => $Key,
+            'BluePrint' => $BluePrint
+        ));
+    }
+    public function leave(Request $request,$Key){
+        $bluePrintString = Cache::get($Key);
+        if (!Cache::has($bluePrintString."people")){
+            abort(404);
+        }
+        Cache::decrement($bluePrintString.'people');
+    }
+    public function update(Request $request){
+        $validated = $request->validate([
+            'Key' => 'required',
+        ]);
+        $bluePrintString = Cache::get($validated['Key']);
+        if (!Cache::has($bluePrintString."question")){
+            abort(404);
+        }
+        return Cache::get($bluePrintString."question");
     }
 
 }

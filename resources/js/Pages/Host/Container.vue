@@ -11,7 +11,7 @@
             <div class="w-full bg-white rounded shadow-lg m-4">
                 <div class="flex space-x-4 flex-col">
 
-                    <InfoDisplayer :Titel="joinCodeString(join_key)" :Subtitel="'Geben sie diesen Code ein um beizutreten'">
+                    <InfoDisplayer :titel="joinCodeString(join_key)" :subtitel="'Geben sie diesen Code ein um beizutreten'">
                         <div class="shadow border rounded-lg bg-white">
                             <div class="flex items-center rounded-lg space-x-4 p-4">
                                 <a :href="'/join/'+this.join_key" target="_blank" title="Join">

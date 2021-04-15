@@ -51,6 +51,8 @@ Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
 //Join
 Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
+Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');
+Route::get('/live/update', [SurveyHostController::class , 'update'])->name('update');
 
 //Home
 Route::get('/validateKey',[HomeController::class , 'validateJoinKey'])->name('validateKey');
