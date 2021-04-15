@@ -15,7 +15,7 @@
 <script>
 import SurveyTerminResult from "@/Pages/SurveyResults/SurveyTerminResult";
 export default {
-    name: "SurveyResults",
+    name: "QuestionResults",
     components: {SurveyTerminResult},
     props: ['question', 'answers'],
 }

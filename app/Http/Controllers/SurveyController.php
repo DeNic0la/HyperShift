@@ -169,11 +169,6 @@ class SurveyController extends Controller
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
-        /*return BasicAnswer::where('surveyId', '=', $validated['surveyId'])->with('user')->with('terminanswers')
-            ->with('basicsurvey')->with('basicsurvey.user')
-            ->with('basicsurvey.questions')->with('basicsurvey.questions.terminquestion')
-            ->with('basicsurvey.questions.terminquestion.termins')
-            ->with('terminanswers.termin')->get();*/
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')
             ->with('basicanswers')
             ->with('basicanswers.user')->with('basicanswers.terminanswers')

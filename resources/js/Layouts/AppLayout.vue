@@ -23,9 +23,6 @@
                                 <jet-nav-link :href="route('create')" :active="route().current('create')">
                                     Create
                                 </jet-nav-link>
-<!--                                <jet-nav-link :href="route('results')" :active="route().current('results')">-->
-<!--                                    Results-->
-<!--                                </jet-nav-link>-->
                             </div>
                         </div>
 
