@@ -1,22 +1,16 @@
 <template>
-
     <div class="flex flex-col mb-4 md:mx-10">
         <div class="mb-2 text-grey-darkest">{{question.name}}</div>
-
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
             <div v-for="(option,index) in question.termins">
+
                 <TerminOptions :option="option" :count="doCount(option.id)">
 
                 </TerminOptions>
 
             </div>
-
         </div>
-
-
     </div>
-
-
 </template>
 
 <script>
@@ -41,17 +35,11 @@ export default {
                         else{
                             console.log(terminanswer.termin.id);
                         }
-
                 })
-
             })
             return count;
         }
-
     },
-    beforeCreate() {
-
-    }
 }
 </script>
 
