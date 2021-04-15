@@ -21,7 +21,7 @@
                             </div>
                         </label>
 
-                        <SurveyResultsManager :answers="answers" :questions="survey['questions']">
+                        <SurveyResultsManager :survey="survey">
 
                         </SurveyResultsManager>
 
@@ -45,8 +45,7 @@ export default {
     data()  {
         return {
             surveyString: "",
-            survey: [],
-            answers: [],
+            survey: {},
             name: "",
         }
     },

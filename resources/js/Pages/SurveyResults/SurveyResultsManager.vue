@@ -1,21 +1,20 @@
 <template>
     <div class="flex flex-col mb-4 md:mx-10">
 
-        <div v-for="(question, index) in questions">
+        <div v-for="(question, index) in survey.questions">
+            <QuestionResults :question="question" :answers="survey.basicanswers">
 
-            <SurveyResults :question="question" :answer="answers">
-
-            </SurveyResults>
+            </QuestionResults>
         </div>
     </div>
 </template>
 
 <script>
-import SurveyResults from "@/Pages/SurveyResults/SurveyResults";
+import QuestionResults from "@/Pages/SurveyResults/QuestionResults";
 export default {
     name: "SurveyResultsManager",
-    components: {SurveyResults},
-    props: ['questions','answers'],
+    components: {QuestionResults},
+    props: ['survey'],
 }
 </script>
 

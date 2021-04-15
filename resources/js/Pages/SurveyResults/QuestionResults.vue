@@ -5,7 +5,7 @@
 
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
-            <SurveyTerminResult :question="question['terminquestion']" :answer="answers">
+            <SurveyTerminResult :question="question.terminquestion" :answers="answers">
 
             </SurveyTerminResult>
 
@@ -22,10 +22,7 @@ import SurveyTerminResult from "@/Pages/SurveyResults/SurveyTerminResult";
 export default {
     name: "SurveyResults",
     components: {SurveyTerminResult},
-    props: ['question', 'answer'],
-    methods: {
-
-    },
+    props: ['question', 'answers'],
 }
 </script>
 
