@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
+use App\Models\BluePrint;
 use App\Models\Question;
 use App\Models\TerminAnswer;
 use App\Models\TerminQuestion;
@@ -30,7 +31,7 @@ class SurveyController extends Controller
         $randomString = "";
         do {
             $randomString = Str::random(15);
-        }while(BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
         $survey = BasicSurvey::create([
             'owner_id' => Auth::id(),
             'survey_name' => $validated['name'],
@@ -82,8 +83,8 @@ class SurveyController extends Controller
         $randomString = "";
         do {
             $randomString = Str::random(15);
-        }while(BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
-        $survey = BasicSurvey::create([
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        $survey = BluePrint::create([
             'owner_id' => Auth::id(),
             'survey_name' => $validated['name'],
             'url_string' => $randomString,
@@ -91,11 +92,12 @@ class SurveyController extends Controller
 
         $Questions = $request['questions'];
         foreach ($Questions as $question){
+            $BaseQuestion = $survey->questions()->create();
             if ($question['type'] == 1){
                 $toSave= new TerminQuestion([
                     'name' => $question['name']
                 ]);
-                $QuestionInDB = $survey->terminfrages()->save($toSave);
+                $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
                 foreach ($question['options'] as $option) {
                     if ($option['datetime'] == null || $option['duration'] == null){
 
@@ -112,11 +114,9 @@ class SurveyController extends Controller
         }
 
 
-
-
         return response($survey,201);
-
     }
+
     public function fill(Request $request,$surveyString){
         if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
             abort(404);
