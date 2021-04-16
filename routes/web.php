@@ -49,10 +49,12 @@ Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);
 Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
 Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
+Route::post('/host/update',[SurveyHostController::class , 'updateQuestion'])->name('updateQuestion');
 //Join
 Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
 Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');
 Route::get('/live/update', [SurveyHostController::class , 'update'])->name('update');
+Route::get('/live/question', [SurveyHostController::class , 'question'])->name('question');
 
 //Home
 Route::get('/validateKey',[HomeController::class , 'validateJoinKey'])->name('validateKey');

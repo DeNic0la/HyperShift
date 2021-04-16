@@ -11,7 +11,7 @@
             <div class="w-full bg-white rounded shadow-lg m-4">
                 <div class="flex space-x-4 flex-col">
 
-                    <InfoDisplayer :titel="joinCodeString(join_key)" :subtitel="'Geben sie diesen Code ein um beizutreten'">
+                    <InfoDisplayer :titel="joinCodeString(join_key)" :subtitel="'Geben sie diesen Code ein um beizutreten'" :question="currentQuestion" v-if="this.currentQuestion === 0 || ( this.currentQuestion === 1 && this.questionNumberInSync === false)">
                         <div class="shadow border rounded-lg bg-white">
                             <div class="flex items-center rounded-lg space-x-4 p-4">
                                 <a :href="'/join/'+this.join_key" target="_blank" title="Join">
@@ -28,11 +28,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="" class="block p-3 text-lg rounded-lg font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer">
+                            <button @click="startSurvey()" class="block p-3 inline w-full text-lg rounded-lg font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer">
                                 Start
-                            </a>
+                            </button>
                         </div>
                     </InfoDisplayer>
+                    <div v-else>
+                        v-Else
+                    </div>
 
 
 
@@ -47,10 +50,12 @@
 <script>
 import AppLayout from "../../Layouts/AppLayout";
 import InfoDisplayer from "./InfoDisplayer";
+import Button from "../../Jetstream/Button";
 
 export default {
     name: "Container",
     components: {
+        Button,
         InfoDisplayer,
         AppLayout
     },
@@ -60,7 +65,8 @@ export default {
             bluePrintString: "",
             bluePrintData: {},
             numberOfPeople: 0,
-
+            currentQuestion: 0,
+            questionNumberInSync: true,
         }
     },
     methods:{
@@ -73,12 +79,42 @@ export default {
                 if (response.status === 200){
                     this.numberOfPeople = response.data;
                 }
+                else
+                    this.updateLobby();
             })
+        },
+        startSurvey(){
+            this.questionNumberInSync = false;
+            this.currentQuestion++;
         },
         joinCodeString(joinKey){
             let key = joinKey.toString();
             let matchedKey = key.match(/.{1,2}/g);
             return matchedKey.join(' ');
+        },
+        updateCurrentQuestionToServer(questionNumber){
+            this.questionNumberInSync = false;
+            axios.post('/host/update',{
+
+                bluePrintString: this.bluePrintString,
+                questionNumber: questionNumber,
+
+            }).then( response => {
+                if (response.status !== 200){
+                    setTimeout(this.updateCurrentQuestionToServer,1000)
+                }
+                else {
+                    this.questionNumberInSync = true;
+                }
+            }).catch(error => {
+                console.log(error);
+                setTimeout(this.updateCurrentQuestionToServer,500)
+            })
+        }
+    },
+    watch:{
+        currentQuestion: function (newValue){
+            this.updateCurrentQuestionToServer(newValue);
         }
     },
     created() {

@@ -15,7 +15,7 @@ createApp({
         }),
 })
     .mixin({ methods: { route } })
-    .use(InertiaPlugin)
+    .use(InertiaPlugin)//Ad Plugins here
     .mount(el);
 
 InertiaProgress.init({ color: '#4B5563' });

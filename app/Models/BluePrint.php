@@ -10,7 +10,7 @@ class BluePrint extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $hidden = ['url_string'];
+    //protected $hidden = [''];
 
     public function user(){
         return $this->belongsTo(User::class, 'owner_id');

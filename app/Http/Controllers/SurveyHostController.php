@@ -26,7 +26,7 @@ class SurveyHostController extends Controller
             abort(404);
         }
 
-        if ($BluePrint->first()->user() !== null && $BluePrint->first()->user()->first()->id !== Auth::id()){
+        if ($BluePrint->first()->user()->first() !== null && $BluePrint->first()->user()->first()->id !== Auth::id()){
             abort(403);
         }
 
@@ -52,13 +52,13 @@ class SurveyHostController extends Controller
         ]);
         $bluePrintString = $validated['bluePrintString'];
         $Key = Cookie::get($bluePrintString);
-        if (Cache::get($Key) !== $bluePrintString||Cache::get($bluePrintString."question") !== 0)
+        if (Cache::get($Key) !== $bluePrintString||!Cache::has($bluePrintString."question"))
             abort(404);
         Cache::put($Key,$bluePrintString,100);
         return Cache::get($bluePrintString."people");
     }
 
-    public function join(Request $request,$Key){
+    public function join(Request $request,$Key){//PHP Session id
         $bluePrintString = Cache::get($Key);
         if (!Cache::has($bluePrintString."people")){
             abort(404);
@@ -86,6 +86,40 @@ class SurveyHostController extends Controller
             abort(404);
         }
         return Cache::get($bluePrintString."question");
+    }
+    public function updateQuestion(Request $request){
+        $validated = $request->validate([
+            'bluePrintString' => 'required',
+            'questionNumber' => 'required|integer',
+        ]);
+        $bluePrintString = $validated['bluePrintString'];
+        if (!Cache::has($bluePrintString."question")){
+            abort(404);
+        }
+        Cache::put($bluePrintString."question",$validated['questionNumber'],1800);
+        return response(null,200);
+    }
+    public function question(Request $request){
+        return $request;
+        $validated = $request->validate([
+            'Key' => 'required',
+            'lastKnownQuestion' => 'integer',
+        ]);
+        $bluePrintString = Cache::get($validated['Key']);
+        if (!Cache::has($bluePrintString."question")){
+            abort(404);
+        }
+        $currentQuestion = Cache::get($bluePrintString."question");
+        if ($currentQuestion == $validated['lastKnownQuestion'])
+            return array('newQuestion' => false);
+        $Key = $validated['Key'];
+        return Cache::remember('question'+$currentQuestion+$Key,20,function () use ($bluePrintString,$currentQuestion,$Key) {
+           $Questions = Cache::remember('questions'+$Key,18, function () use ($bluePrintString) {//TODO Change the Numbers
+               return collect(BluePrint::where('url_string', '=', $bluePrintString)->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->first()->questions());
+           });
+           dd($Questions);
+        });
+
     }
 
 }

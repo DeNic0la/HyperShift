@@ -9,11 +9,14 @@
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg m-4">
                 <div class="flex space-x-4 flex-col">
-                    <InfoDisplayer v-if="currentQuestion === 0" :titel="'Sie sind der Umfrage beigetreten'" :subtitel="'warten sie bis der Host mit der Umfrage Startet.'">
+                    <InfoDisplayer v-if="currentQuestion === 0" :question="currentQuestion" :titel="'Sie sind der Umfrage beigetreten'" :subtitel="'warten sie bis der Host mit der Umfrage Startet.'">
                         <SurveyDisplayer v-bind:name="BluePrint.survey_name" v-bind:creator="BluePrint.user?.name">
 
                         </SurveyDisplayer>
                     </InfoDisplayer>
+                    <LiveQuestionDisplayer v-else v-model:currentQuestionNumber="currentQuestion">
+
+                    </LiveQuestionDisplayer>
                 </div>
             </div>
         </div>
@@ -26,6 +29,7 @@
 import AppLayout from "../../Layouts/AppLayout";
 import SurveyDisplayer from "../AnswerBasicSurvey/SurveyDisplayer";
 import InfoDisplayer from "../Host/InfoDisplayer";
+import LiveQuestionDisplayer from "./LiveQuestionDisplayer";
 
 
 export default {
@@ -34,6 +38,7 @@ export default {
         AppLayout,
         SurveyDisplayer,
         InfoDisplayer,
+        LiveQuestionDisplayer,
     },
     props: ['Key','BluePrint'],
     data()  {
@@ -55,11 +60,18 @@ export default {
             })
         },
     },
+    watch:{
+        currentQuestion: function (val){
+            if (val !== 0){
+                this.interval = null;
+            }
+        }
+    },
     created() {
         this.interval = setInterval(() => this.updateQuestion(), 5000);
     },
     beforeDestroy() {
-        axios.get('/leave/'+this.Key);
+        axios.get('/leave/'+this.Key); //onBeforeUnload
     }
 
 }
