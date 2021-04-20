@@ -153,6 +153,56 @@ Json object der Umfrage
 {% endapi-method-spec %}
 {% endapi-method %}
 
+{% api-method method="post" host="" path="/answerSurvey" %}
+{% api-method-summary %}
+Answer Survey
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Speichert eine Antwort zu einer Umfrage in der Datenbank.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-form-data-parameters %}
+{% api-method-parameter name="survey" type="string" required=true %}
+Ein Survey-String welcher zu einer BasicSurvey passt
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="name" type="string" required=false %}
+Name des Ausfüllenden, wird nur verwendet wenn nicht angemeldet
+{% endapi-method-parameter %}
+
+{% api-method-parameter name="answers" type="object" required=true %}
+Antworten zu den Fragen
+{% endapi-method-parameter %}
+{% endapi-method-form-data-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Antwort wurde erfolgreich erstellt.
+{% endapi-method-response-example-description %}
+
+```
+
+```
+{% endapi-method-response-example %}
+
+{% api-method-response-example httpCode=404 %}
+{% api-method-response-example-description %}
+Wenn ein Ungültiger Survey-String mitgegeben wird.
+{% endapi-method-response-example-description %}
+
+```
+404
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
 
 
 
