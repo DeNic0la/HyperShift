@@ -11,7 +11,7 @@ Nach dem Klonen des HyperShift-Projekts führten wir im Projektfolder `Composer 
 
 ![Composer Install Problem](.gitbook/assets/image%20%283%29.png)
 
-Um dies zu beheben versuchten wir verschiedene Commands aus wie z.B: "php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider" oder "composer require laravel/jetstream". Auch damit konnten wir das Problem nicht beheben.
+Um dies zu beheben versuchten wir verschiedene Commands aus wie z.B: "php artisan vendor:publish --provider="Laravel\Fortify\FortifyServiceProvider" oder "composer require laravel/jetstream". Auch damit konnten wir das Problem nicht beheben. Wir haben Laravel mehrmals neu aufgesetzt bis das dann Funktioniert hat.
 
 ### PHP-Version:
 
