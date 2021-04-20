@@ -29,13 +29,13 @@ Route::get('/create', function () {
 })->name('create');
 Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
 
-Route::post('/createSurvey',[SurveyController::class , 'create']);
-Route::post('/createBlueprint',[SurveyController::class , 'createBluePrint']);
+Route::post('/createSurvey',[SurveyController::class , 'create'])->name('createBasicSurvey');
+Route::post('/createBlueprint',[SurveyController::class , 'createBluePrint'])->name('createBluePrint');
 
-Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
+Route::get('/getSurvey',[SurveyController::class , 'getSurvey'])->name('getBasicSurvey');
 
 
-Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey']);
+Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey'])->name('answerBasicSurvey');
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
