@@ -88,5 +88,72 @@ Der BluePrint wurde erfolgreich erstellt.
 {% endapi-method-spec %}
 {% endapi-method %}
 
+{% api-method method="get" host="" path="/getSurvey" %}
+{% api-method-summary %}
+Get Basic Survey
+{% endapi-method-summary %}
+
+{% api-method-description %}
+Gibt eine BasicSurvey mit Question\(s\) als Json object zurück.
+{% endapi-method-description %}
+
+{% api-method-spec %}
+{% api-method-request %}
+{% api-method-form-data-parameters %}
+{% api-method-parameter name="surveyString" type="string" required=true %}
+Muss einer BasicSurvey zugeordnet werden können
+{% endapi-method-parameter %}
+{% endapi-method-form-data-parameters %}
+{% endapi-method-request %}
+
+{% api-method-response %}
+{% api-method-response-example httpCode=200 %}
+{% api-method-response-example-description %}
+Json object der Umfrage
+{% endapi-method-response-example-description %}
+
+```javascript
+{
+    "id":5,
+    "survey_name":"Umfrage",
+    "url_string":"uV4fBBLEw0mxqpB",
+    "owner_id":null,
+    "created_at":"2021-04-20T13:58:48.000000Z",
+    "updated_at":"2021-04-20T13:58:48.000000Z",
+    "user":null,
+    "questions":[
+    {
+        "id":16,
+        "questionable_id":5,
+        "questionable_type":"App\\Models\\BasicSurvey",
+        "created_at":"2021-04-20T13:58:48.000000Z",
+        "updated_at":"2021-04-20T13:58:48.000000Z",
+        "terminquestion":
+        {
+            "id":16,
+            "questionId":16,
+            "name":"NameDerFrage",
+            "created_at":"2021-04-20T13:58:48.000000Z",
+            "updated_at":"2021-04-20T13:58:48.000000Z",
+            "termins":[
+            {
+                "id":20,
+                "terminQuestionId":16,
+                "time":"2021-04-08 06:01:00",
+                "duration":10,
+                "created_at":"2021-04-20T13:58:48.000000Z",
+                "updated_at":"2021-04-20T13:58:48.000000Z"
+            }]
+        }
+    }]
+}
+```
+{% endapi-method-response-example %}
+{% endapi-method-response %}
+{% endapi-method-spec %}
+{% endapi-method %}
+
+
+
 
 
