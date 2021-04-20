@@ -21,7 +21,7 @@ Nach dem Installieren von PHP hatten wir eine alte PHP-Version 5.4 installiert. 
 
 ### Git-Version updaten:
 
-Um mit dem Arbeiten anzufangen benötigten wir natürlich noch Git. Dieser Download funktioniert zwar ohne Probleme, jedoch installierte es uns die falsche Version. Darum mussten wir mithilfe von dieser Website Git nochmals über Source herunterladen. Jetzt haben wir beide die Version 2.10.1 welche auch nicht gerade neu ist aber mit dieser können wir wenigstens arbeiten.
+Um mit dem Arbeiten anzufangen benötigten wir natürlich noch Git. Dieser Download funktioniert zwar ohne Probleme, jedoch installierte es uns die falsche Version. Darum mussten wir mithilfe von dieser [Website ](https://www.tecmint.com/install-git-centos-fedora-redhat/)Git nochmals über Source herunterladen. Jetzt haben wir beide die Version 2.10.1 welche auch nicht gerade neu ist aber mit dieser können wir wenigstens arbeiten.
 
 ![](.gitbook/assets/image%20%286%29.png)
 
