@@ -1,2 +1,3 @@
 # Initial page
 
+[Dokumentation](/docs/)
