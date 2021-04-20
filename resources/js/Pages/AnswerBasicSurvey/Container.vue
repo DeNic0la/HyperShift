@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Umfrage Beantworten
+                Umfrage beantworten
             </h2>
         </template>
 
@@ -98,7 +98,7 @@ export default {
             }
         }).then( response => {
             if (response.status === 200){
-                this. survey = response.data;
+                this.survey = response.data;
             }
         })
 

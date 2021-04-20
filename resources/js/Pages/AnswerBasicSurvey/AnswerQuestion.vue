@@ -9,6 +9,13 @@
 
             </AnswerTerminQuestion>
 
+
+            <div v-if="question.type === 2">
+            <AnswerConfidenceQuestion :question="question" :answer="answers">
+
+            </AnswerConfidenceQuestion>
+            </div>
+
         </div>
 
 
@@ -19,9 +26,10 @@
 
 <script>
 import AnswerTerminQuestion from "./AnswerTerminQuestion";
+import AnswerConfidenceQuestion from "./AnswerConfidenceQuestion";
 export default {
     name: "AnswerQuestion",
-    components: {AnswerTerminQuestion},
+    components: {AnswerTerminQuestion, AnswerConfidenceQuestion},
     props: ['question', 'answer'],
     emits: ['CheckboxTicked'],
     methods: {

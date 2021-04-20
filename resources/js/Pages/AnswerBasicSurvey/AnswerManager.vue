@@ -6,6 +6,7 @@
             <AnswerQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 
             </AnswerQuestion>
+
         </div>
     </div>
 </template>

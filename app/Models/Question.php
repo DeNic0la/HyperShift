@@ -15,6 +15,10 @@ class Question extends Model
         return $this->hasOne(TerminQuestion::class, 'questionId');
     }
 
+    public function confidencevotequestion(){
+        return $this->hasOne(ConfidenceVoteQuestion::class, 'questionId');
+    }
+
     public function questionable(){
         return $this->morphTo();
     }
