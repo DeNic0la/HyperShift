@@ -12,7 +12,7 @@
 <script>
 export default {
     name: "TerminTicker",
-    props: ['option', 'answer'],
+    props: ['option'],
     emits: ['CheckboxTicked'],
     data: function () {
         return {

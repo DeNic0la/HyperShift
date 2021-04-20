@@ -14,7 +14,7 @@
 
                         </SurveyDisplayer>
                     </InfoDisplayer>
-                    <LiveQuestionDisplayer v-else v-model:currentQuestionNumber="currentQuestion">
+                    <LiveQuestionDisplayer v-else v-model:currentQuestionNumber="currentQuestion" :Key="Key" :AmountOfQuestions="AmountOfQuestions">
 
                     </LiveQuestionDisplayer>
                 </div>
@@ -40,10 +40,11 @@ export default {
         InfoDisplayer,
         LiveQuestionDisplayer,
     },
-    props: ['Key','BluePrint'],
+    props: ['Key','BluePrint','AmountOfQuestions'],
     data()  {
         return {
             currentQuestion: 0,
+            updateInterval: null,
         }
     },
     methods:{
@@ -63,12 +64,12 @@ export default {
     watch:{
         currentQuestion: function (val){
             if (val !== 0){
-                this.interval = null;
+                clearInterval(this.updateInterval)
             }
         }
     },
     created() {
-        this.interval = setInterval(() => this.updateQuestion(), 5000);
+        this.updateInterval = setInterval(() => this.updateQuestion(), 5000);
     },
     beforeDestroy() {
         axios.get('/leave/'+this.Key); //onBeforeUnload

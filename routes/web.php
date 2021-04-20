@@ -55,6 +55,7 @@ Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
 Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');
 Route::get('/live/update', [SurveyHostController::class , 'update'])->name('update');
 Route::get('/live/question', [SurveyHostController::class , 'question'])->name('question');
+Route::post('/live/answer', [SurveyHostController::class , 'answer'])->name('answer');
 
 //Home
 Route::get('/validateKey',[HomeController::class , 'validateJoinKey'])->name('validateKey');

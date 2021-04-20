@@ -5,7 +5,7 @@
 
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
-            <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
+            <AnswerTerminQuestion :question="question['terminquestion']" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 
             </AnswerTerminQuestion>
 

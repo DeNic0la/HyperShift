@@ -18,6 +18,8 @@ class SurveyHostController extends Controller
         $Key = Cookie::get($bluePrintString);
         if ($Key !== null && Cache::get($Key) == $bluePrintString){
             Cache::put($Key,$bluePrintString,18); //TODO Change to 1800
+            Cache::put($bluePrintString."question",0,1800);
+            Cache::put($bluePrintString."people",0,1800);
             return Inertia::render('Host/Container', array('join_key' => $Key));
         }
 
@@ -67,7 +69,8 @@ class SurveyHostController extends Controller
         $BluePrint = BluePrint::where('url_string', '=', $bluePrintString)->with('user')->first();
         return Inertia::render('LiveSurvey/Container',array(
             'Key' => $Key,
-            'BluePrint' => $BluePrint
+            'BluePrint' => $BluePrint,
+            'AmountOfQuestions' => $BluePrint->questions()->count()
         ));
     }
     public function leave(Request $request,$Key){
@@ -100,7 +103,6 @@ class SurveyHostController extends Controller
         return response(null,200);
     }
     public function question(Request $request){
-        return $request;
         $validated = $request->validate([
             'Key' => 'required',
             'lastKnownQuestion' => 'integer',
@@ -113,13 +115,42 @@ class SurveyHostController extends Controller
         if ($currentQuestion == $validated['lastKnownQuestion'])
             return array('newQuestion' => false);
         $Key = $validated['Key'];
-        return Cache::remember('question'+$currentQuestion+$Key,20,function () use ($bluePrintString,$currentQuestion,$Key) {
-           $Questions = Cache::remember('questions'+$Key,18, function () use ($bluePrintString) {//TODO Change the Numbers
-               return collect(BluePrint::where('url_string', '=', $bluePrintString)->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->first()->questions());
+        $Question = Cache::remember('question' . strval($currentQuestion) . strval($Key),20,function () use ($bluePrintString,$currentQuestion,$Key) {
+           $Questions = Cache::remember('questions'.$Key,18, function () use ($bluePrintString) {//TODO Change the Numbers
+               return collect(BluePrint::where('url_string', '=', $bluePrintString)->first()->questions()->with('terminquestion')->with('terminquestion.termins')->get());
            });
-           dd($Questions);
+           return $Questions->getNth($currentQuestion);
         });
+        return array('newQuestion' => true,'question' => $Question, 'currentQuestion' => $currentQuestion);
 
+    }
+    public function answer(Request $request){
+        $validated = $request->validate([
+            'answers' => 'required',
+            'Key' => 'required|integer',
+            'questionNumber' => 'required|integer'
+        ]);
+        $Key = $validated['Key'];
+        $bluePrintString = Cache::get($Key);
+        if (!Cache::has($bluePrintString."question")){
+            abort(404);
+        }
+
+
+
+        $BluePrint = BluePrint::where('url_string', '=', $bluePrintString)->first();
+        $Answer = $BluePrint->basicanswers()->create([
+            'fillerId' => Auth::id(),
+            'fillerName' => '',
+        ]);
+        foreach ($validated['answers'] as $item){
+            $Answer->terminanswers()->create([
+                'terminId' => $item
+            ]);
+        }
+
+
+        return $request;
     }
 
 }
