@@ -1,5 +1,5 @@
 # Table of contents
 
-* [Inhaltsverzeichnis](README.md)
-* [Probleme](problems.md)
+* [HyperShift - Dokumentation](README.md)
+* [Technische Probleme](problems.md)
 

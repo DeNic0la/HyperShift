@@ -1,4 +1,4 @@
-# Inhaltsverzeichnis
+# HyperShift - Dokumentation
 
 TODO
 
