@@ -21,7 +21,7 @@
                         </div>
                     </label>
 
-                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateArray($event)">
+                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateTerminAnswers($event)" @ConfidenceValue="updateConfidenceAnswers($event)">
 
                     </AnswerManager>
 
@@ -54,7 +54,8 @@ export default {
         return {
             surveyString: "",
             survey: [],
-            answers: [],
+            terminAnswers: [],
+            confidenceAnswers: [],
             name: "",
         }
     },
@@ -65,7 +66,8 @@ export default {
 
             axios.post('/answerSurvey',null,{
                 params:{
-                    answers: this.answers,
+                    terminAnswers: this.terminAnswers,
+                    confidenceAnswers: this.confidenceAnswers,
                     survey: this.survey.url_string,
                     name: this.name,
                 }
@@ -75,16 +77,25 @@ export default {
                 }
             })
         },
-        updateArray(id){
-
+        updateTerminAnswers(id){
             console.log(id);
-            if (this.answers.includes(id)){
-                this.answers.splice( this.answers.indexOf(id), 1);
+            if (this.terminAnswers.includes(id)){
+                this.terminAnswers.splice( this.terminAnswers.indexOf(id), 1);
             }
             else {
-                this.answers.push(id);
+                this.terminAnswers.push(id);
             }
-
+            const index = array.indexOf(element);
+            array.splice(index, 1);
+        },
+        updateConfidenceAnswers(id){
+            console.log(id);
+            if (this.confidenceAnswers.includes(id)){
+                this.confidenceAnswers.splice( this.confidenceAnswers.indexOf(id), 1);
+            }
+            else {
+                this.confidenceAnswers.push(id);
+            }
             const index = array.indexOf(element);
             array.splice(index, 1);
         }

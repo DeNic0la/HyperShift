@@ -3,7 +3,7 @@
 
         <div v-for="(question, index) in questions">
 
-            <AnswerQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
+            <AnswerQuestion :question="question" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)" @ConfidenceValue="$emit('ConfidenceValue',$event)">
 
             </AnswerQuestion>
 
@@ -17,7 +17,7 @@ export default {
     name: "AnswerManager",
     components: {AnswerQuestion},
     props: ['questions','answers'],
-    emits: ['CheckboxTicked'],
+    emits: ['CheckboxTicked', 'ConfidenceValue'],
 
 }
 </script>

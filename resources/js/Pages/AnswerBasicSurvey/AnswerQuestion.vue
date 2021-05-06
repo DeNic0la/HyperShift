@@ -5,15 +5,16 @@
 
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
-            <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
+            <div v-if="question['terminquestion']">
+                <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
 
-            </AnswerTerminQuestion>
+                </AnswerTerminQuestion>
+            </div>
 
+            <div v-if="question['confidencevotequestion']">
+                <AnswerConfidenceQuestion :question="question['confidencevotequestion']" :answer="answers" @ConfidenceValue="$emit('ConfidenceValue',$event)">
 
-            <div v-if="question.type === 2">
-            <AnswerConfidenceQuestion :question="question" :answer="answers">
-
-            </AnswerConfidenceQuestion>
+                </AnswerConfidenceQuestion>
             </div>
 
         </div>
@@ -31,7 +32,7 @@ export default {
     name: "AnswerQuestion",
     components: {AnswerTerminQuestion, AnswerConfidenceQuestion},
     props: ['question', 'answer'],
-    emits: ['CheckboxTicked'],
+    emits: ['CheckboxTicked', 'ConfidenceValue'],
     methods: {
 
     },

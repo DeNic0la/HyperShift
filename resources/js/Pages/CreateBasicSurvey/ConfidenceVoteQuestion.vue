@@ -34,8 +34,6 @@ export default {
         this.question.options.push(toPush);
 
     },
-    methods: {
-    }
 }
 </script>
 

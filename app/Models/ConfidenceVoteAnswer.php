@@ -9,7 +9,7 @@ class ConfidenceVoteAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['answerId'];
+    protected $fillable = ['answerId', 'value'];
 
     public function basicanswer(){
         return $this->belongsTo(BasicAnswer::class, 'answerId', 'id');
