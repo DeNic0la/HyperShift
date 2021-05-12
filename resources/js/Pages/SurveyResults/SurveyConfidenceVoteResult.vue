@@ -3,7 +3,7 @@
         <div class="mb-2 text-grey-darkest">{{question.name}}</div>
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
-                <ConfidenceVoteOptions :average="avarage()">
+                <ConfidenceVoteOptions :average="average">
 
                 </ConfidenceVoteOptions>
 
@@ -17,25 +17,24 @@ import ConfidenceVoteOptions from "@/Pages/SurveyResults/ConfidenceVoteOptions";
 export default {
     name: "SurveyConfidenceVoteResult",
     components: {ConfidenceVoteOptions},
-    props: ['question', 'answers'],
+    props: ['question', 'answer'],
     methods: {
-        avarage(){
-            let count = 0;
-            let amount = 0;
-            console.log(this.answers);
-            this.answers.forEach(answer => {
-                console.log(answer);
-                answer.confidencevoteanswer.forEach(confidencevoteanswer => {
-                    console.log(confidencevoteanswer);
-                    console.log(confidencevoteanswer.value);
-                        count++;
-                        amount+= confidencevoteanswer.value;
-                })
-            })
-            let average = amount / count;
-            return average;
-        }
     },
+    mounted() {
+        console.log(this.answer);
+    },
+    computed: {
+        average: function (){
+            let answerCount = 0;
+            let totalValue = 0;
+            let average = 0;
+             for( let [key, value] of Object.entries(this.answer)){
+                 answerCount += value;
+                 totalValue += (key * value);
+             }
+             return (totalValue / answerCount).toFixed(3) ;
+        }
+    }
 }
 </script>
 

@@ -55,7 +55,7 @@ export default {
             surveyString: "",
             survey: [],
             terminAnswers: [],
-            confidenceAnswers: [],
+            confidenceAnswers: {},
             name: "",
         }
     },
@@ -63,13 +63,12 @@ export default {
         sendAnswers(
         ){
             //ValidateAnswersHereIfneeded
-
             axios.post('/answerSurvey',null,{
                 params:{
                     terminAnswers: this.terminAnswers,
                     confidenceAnswers: this.confidenceAnswers,
                     survey: this.survey.url_string,
-                    name: this.name,
+                    name: this.name
                 }
             }).then(response => {
                 if (response.status === 200){
@@ -88,16 +87,8 @@ export default {
             const index = array.indexOf(element);
             array.splice(index, 1);
         },
-        updateConfidenceAnswers(id){
-            console.log(id);
-            if (this.confidenceAnswers.includes(id)){
-                this.confidenceAnswers.splice( this.confidenceAnswers.indexOf(id), 1);
-            }
-            else {
-                this.confidenceAnswers.push(id);
-            }
-            const index = array.indexOf(element);
-            array.splice(index, 1);
+        updateConfidenceAnswers(value){
+            this.confidenceAnswers[value.questionId] = value.value;
         }
     },
     created() {
@@ -108,11 +99,15 @@ export default {
                 surveyString: this.surveyString,
             }
         }).then( response => {
-            if (response.status === 200){
+            if (response.status === 200) {
                 this.survey = response.data;
+                this.survey.questions.forEach(surveyQuestion => {
+                    if (surveyQuestion.hasOwnProperty('confidencevotequestion')) {
+                        this.confidenceAnswers[surveyQuestion.confidencevotequestion.id] = 1;
+                    }
+                })
             }
         })
-
     }
 
 }

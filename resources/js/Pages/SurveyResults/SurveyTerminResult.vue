@@ -22,18 +22,13 @@ export default {
     methods: {
         doCount(id){
             let count = 0;
-            console.log(id);
-            console.log(this.answers);
             this.answers.forEach(answer => {
-                console.log(answer);
                 answer.terminanswers.forEach(terminanswer => {
-                    console.log(terminanswer);
-                        console.log(terminanswer.termin);
                         if(terminanswer.termin.id === id){
                             count++;
                         }
                         else{
-                            console.log(terminanswer.termin.id);
+
                         }
                 })
             })

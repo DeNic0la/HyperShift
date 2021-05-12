@@ -15,4 +15,8 @@ class ConfidenceVoteQuestion extends Model
         return $this->hasOne(Question::class, 'Id', 'questionId');
     }
 
+    public function confidencevoteanswer(){
+        return $this->hasMany(ConfidenceVoteAnswer::class, 'questionId', 'id');
+    }
+
 }

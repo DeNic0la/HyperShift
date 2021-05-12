@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use ParagonIE\ConstantTime\Base64DotSlash;
 
 class SurveyController extends Controller
 {
@@ -142,12 +143,14 @@ class SurveyController extends Controller
     }
 
     public function answerSurvey(Request $request){
+        //return response($request, 404);
         $validated = $request->validate([
-            'confidenceAnswers' => 'required',
-            'terminAnswers' => 'required',
+            'confidenceAnswers' => 'nullable',
+            'terminAnswers' => 'nullable',
             'survey' => 'required',
             'name' => ''
         ]);
+
         if (BasicSurvey::where('url_string', '=', $validated['survey'])->count() == 0){
             abort(404);
         }
@@ -157,15 +160,21 @@ class SurveyController extends Controller
             'fillerId' => Auth::id(),
             'fillerName' => $validated['name'] == "" ? null:$validated['name'],
         ]);
-        foreach ($validated['terminAnswers'] as $terminAnswer) {
+        if(isset($validated['terminAnswers'])) {
+            foreach ($validated['terminAnswers'] as $terminAnswer) {
                 $Answer->terminanswers()->create([
                     'terminId' => $terminAnswer
                 ]);
+            }
         }
-        foreach ($validated['confidenceAnswers'] as $confidenceAnswer) {
-            $Answer->confidencevoteanswer()->create([
-                'value' => $confidenceAnswer
-            ]);
+        if(isset($validated['confidenceAnswers'])) {
+            $confidenceAnswers = json_decode($validated['confidenceAnswers'], true);
+                foreach ($confidenceAnswers as $key => $value) {
+                $Answer->confidencevoteanswer()->create([
+                    'value' => $value,
+                    'questionId' => intval($key)
+                ]);
+            }
         }
         return $request;
 

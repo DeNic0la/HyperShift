@@ -15,8 +15,9 @@ class CreateConfidenceVoteAnswersTable extends Migration
     {
         Schema::create('confidence_vote_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('answerId')->nullable();
-            $table->integer('value')->nullable();
+            $table->foreignId('answerId');
+            $table->foreignId('questionId');
+            $table->integer('value');
             $table->timestamps();
         });
     }

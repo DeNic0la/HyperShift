@@ -21,7 +21,7 @@
                             </div>
                         </label>
 
-                        <SurveyResultsManager :survey="survey">
+                        <SurveyResultsManager v-if="survey.length !== 0" :survey="survey" :confidenceVoteAnswers="confidenceVoteAnswers">
 
                         </SurveyResultsManager>
 
@@ -47,6 +47,7 @@ export default {
             surveyString: "",
             survey: {},
             name: "",
+            confidenceVoteAnswers: {},
         }
     },
     created() {
@@ -59,8 +60,30 @@ export default {
         }).then(response => {
             if (response.status === 200) {
                 this.survey = response.data;
+                this.sortConfidenceVote(this.survey.basicanswers);
             }
         })
+    },
+    methods: {
+        sortConfidenceVote(answers){
+            let results = {};
+            answers.forEach(answer => {
+                if(answer.confidencevoteanswer !== null){
+                    answer.confidencevoteanswer.forEach(confidenceanswer => {
+                        if(!results.hasOwnProperty(confidenceanswer.questionId)){
+                            results[confidenceanswer.questionId] = {};
+                        }
+                        if(results[confidenceanswer.questionId].hasOwnProperty(confidenceanswer.value)) {
+                            results[confidenceanswer.questionId][confidenceanswer.value]++;
+                        }
+                        else{
+                            results[confidenceanswer.questionId][confidenceanswer.value] = 1;
+                        }
+                    })
+                }
+            })
+           this.confidenceVoteAnswers = results;
+        }
     }
 }
 </script>

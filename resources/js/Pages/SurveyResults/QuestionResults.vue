@@ -11,7 +11,7 @@
             </div>
 
             <div v-if="question['confidencevotequestion']">
-                <SurveyConfidenceVoteResult :question="question.confidencevotequestion" :answers="answers">
+                <SurveyConfidenceVoteResult :question="question.confidencevotequestion" :answer="confidenceVoteAnswers[question.confidencevotequestion.id]">
 
                 </SurveyConfidenceVoteResult>
             </div>
@@ -26,7 +26,7 @@ import SurveyConfidenceVoteResult from "@/Pages/SurveyResults/SurveyConfidenceVo
 export default {
     name: "QuestionResults",
     components: {SurveyConfidenceVoteResult, SurveyTerminResult},
-    props: ['question', 'answers'],
+    props: ['question', 'answers', 'confidenceVoteAnswers'],
 }
 </script>
 
