@@ -11,9 +11,13 @@ class BasicAnswer extends Model
 
     protected $fillable = ['fillerId','fillerName'];
 
-    public function basicsurvey(){
-        return $this->belongsTo(BasicSurvey::class, 'surveyId', 'id');
+
+    public function surveyable(){
+        return $this->morphTo();
     }
+/*    public function basicsurvey(){
+        return $this->belongsTo(BasicSurvey::class, 'surveyId', 'id');
+    }*/
     public function terminanswers(){
         return $this->hasMany(TerminAnswer::class, 'answerId');
     }

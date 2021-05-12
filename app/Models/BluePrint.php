@@ -19,6 +19,9 @@ class BluePrint extends Model
     public function questions(){
         return $this->morphMany(Question::class, 'questionable');
     }
+    public function basicanswers(){
+        return $this->morphMany(BasicAnswer::class, 'surveyable');
+    }
 
 
 }

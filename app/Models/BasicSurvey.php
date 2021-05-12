@@ -21,7 +21,7 @@ class BasicSurvey extends Model
     }
 
     public function basicanswers(){
-        return $this->hasMany(BasicAnswer::class, 'surveyId');
+        return $this->morphMany(BasicAnswer::class, 'surveyable');
     }
 
 }

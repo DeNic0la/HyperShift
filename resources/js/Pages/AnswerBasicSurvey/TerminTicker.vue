@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <label class="inline-flex items-center mt-3">
-            <input type="checkbox" @input="$emit('CheckboxTicked', option.id)" :value="option.id"
+            <input type="checkbox" @input="$emit('CheckboxTicked', option.id)" :value="option.id" :disabled="isDisabled"
                    class="form-checkbox h-5 w-5 text-blue-600"><span class="ml-2 text-gray-700">
             {{ terminDate.getDate() + '.' + (terminDate.getMonth() + 1) + '.' + terminDate.getFullYear() + '   ' + terminDate.getHours() + ':' + terminDate.getMinutes() + '  Dauer: ' + option.duration + ' minuten' }}
         </span>
@@ -12,7 +12,7 @@
 <script>
 export default {
     name: "TerminTicker",
-    props: ['option'],
+    props: ['option','isDisabled'],
     emits: ['CheckboxTicked'],
     data: function () {
         return {

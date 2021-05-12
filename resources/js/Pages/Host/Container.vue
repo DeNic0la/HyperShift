@@ -34,7 +34,15 @@
                         </div>
                     </InfoDisplayer>
                     <div v-else>
-                        v-Else
+                        <LiveResultsDisplayer>
+
+                        </LiveResultsDisplayer>
+                        <div class="flex justify-center">
+                            <div class="flex flex-row content-around">
+                                <button class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer">Prev</button>
+                                <button class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer">Next</button>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -51,13 +59,15 @@
 import AppLayout from "../../Layouts/AppLayout";
 import InfoDisplayer from "./InfoDisplayer";
 import Button from "../../Jetstream/Button";
+import LiveResultsDisplayer from "./LiveResultsDisplayer";
 
 export default {
     name: "Container",
     components: {
         Button,
         InfoDisplayer,
-        AppLayout
+        AppLayout,
+        LiveResultsDisplayer,
     },
     props: ['join_key'],
     data()  {
