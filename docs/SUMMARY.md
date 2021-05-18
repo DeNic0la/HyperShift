@@ -14,6 +14,8 @@
     * [Frage-Typen](code-and-logik/datenbank/fragen/frage-typen/README.md)
       * [TerminQuestion](code-and-logik/datenbank/fragen/frage-typen/terminquestion.md)
 * [API](code-and-logik/api.md)
+* [BasicSurvey](code-and-logik/basicsurvey.md)
+* [BluePrint](code-and-logik/blueprint.md)
 
 ## Presets <a id="presets-1"></a>
 
