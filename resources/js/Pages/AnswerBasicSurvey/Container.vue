@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Umfrage Beantworten
+                Umfrage beantworten
             </h2>
         </template>
 
@@ -21,7 +21,7 @@
                         </div>
                     </label>
 
-                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateArray($event)">
+                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateTerminAnswers($event)" @ConfidenceValue="updateConfidenceAnswers($event)">
 
                     </AnswerManager>
 
@@ -54,7 +54,8 @@ export default {
         return {
             surveyString: "",
             survey: [],
-            answers: [],
+            terminAnswers: [],
+            confidenceAnswers: {},
             name: "",
         }
     },
@@ -62,12 +63,12 @@ export default {
         sendAnswers(
         ){
             //ValidateAnswersHereIfneeded
-
             axios.post('/answerSurvey',null,{
                 params:{
-                    answers: this.answers,
+                    terminAnswers: this.terminAnswers,
+                    confidenceAnswers: this.confidenceAnswers,
                     survey: this.survey.url_string,
-                    name: this.name,
+                    name: this.name
                 }
             }).then(response => {
                 if (response.status === 200){
@@ -75,18 +76,16 @@ export default {
                 }
             })
         },
-        updateArray(id){
-
-            console.log(id);
-            if (this.answers.includes(id)){
-                this.answers.splice( this.answers.indexOf(id), 1);
+        updateTerminAnswers(id){
+            if (this.terminAnswers.includes(id)){
+                this.terminAnswers.splice( this.terminAnswers.indexOf(id), 1);
             }
             else {
-                this.answers.push(id);
+                this.terminAnswers.push(id);
             }
-
-            const index = array.indexOf(element);
-            array.splice(index, 1);
+        },
+        updateConfidenceAnswers(value){
+            this.confidenceAnswers[value.questionId] = value.value;
         }
     },
     created() {
@@ -97,11 +96,15 @@ export default {
                 surveyString: this.surveyString,
             }
         }).then( response => {
-            if (response.status === 200){
-                this. survey = response.data;
+            if (response.status === 200) {
+                this.survey = response.data;
+                this.survey.questions.forEach(surveyQuestion => {
+                    if (surveyQuestion.confidencevotequestion !== null) {
+                            this.confidenceAnswers[surveyQuestion.confidencevotequestion.id] = 1;
+                    }
+                })
             }
         })
-
     }
 
 }

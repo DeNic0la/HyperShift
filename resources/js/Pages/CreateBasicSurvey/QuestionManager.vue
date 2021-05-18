@@ -1,21 +1,25 @@
 <template>
     <div class="flex flex-col mb-4 md:mx-10">
         <div v-for="(question, index) in questions">
-            <termin-question :question="question">
+            <question :question="question">
 
-            </termin-question>
+            </question>
         </div>
-        <button @click="addQuestion" class=" w-2/3 block mx-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded object-none object-center">
-            + Frage Hinzufügen
-        </button>
+
+        <div class="inline-flex">
+            <button @click="addQuestion"  class=" w-2/3 block mx-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded object-none object-center">
+                + Frage Hinzufügen
+            </button>
+
+        </div>
     </div>
 </template>
 
 <script>
-import TerminQuestion from "./TerminQuestion";
+import Question from "@/Pages/CreateBasicSurvey/Question";
 export default {
     name: "QuestionManager",
-    components: {TerminQuestion},
+    components: {Question},
     props: ['questions'],
     data: function () {
         return {
@@ -24,9 +28,9 @@ export default {
     },
     methods: {
         addQuestion(){
-            var tmpQuestion = {type: 1, name: "Welcher Termin passt dir am besten ?"};
+            var tmpQuestion = {type: 0, name: ""};
             this.questions.push(tmpQuestion);
-        }
+        },
     }
 }
 </script>
