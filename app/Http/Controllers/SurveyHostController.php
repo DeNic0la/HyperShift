@@ -16,8 +16,8 @@ class SurveyHostController extends Controller
 {
     public function start(Request $request, $bluePrintString){
         $Key = Cookie::get($bluePrintString);
-        if ($Key !== null && Cache::get($Key) == $bluePrintString){
-            Cache::put($Key,$bluePrintString,18); //TODO Change to 1800
+        if ($Key !== null && Cache::get($Key) === $bluePrintString){
+            Cache::put($Key,$bluePrintString,1800);
             Cache::put($bluePrintString."question",0,1800);
             Cache::put($bluePrintString."people",0,1800);
             return Inertia::render('Host/Container', array('join_key' => $Key));
@@ -35,7 +35,14 @@ class SurveyHostController extends Controller
         do{
             $Key = mt_rand(100000, 999999);
         }while (Cache::has($Key));
-        Cache::put($Key,$bluePrintString,18); //TODO Change to 1800
+
+        $BA = BluePrint::where('url_string', '=', $bluePrintString)->first()->basicanswers()->get();
+        foreach ($BA as $basicAnswer){
+            $basicAnswer->terminanswers()->delete();
+        }
+        BluePrint::where('url_string', '=', $bluePrintString)->first()->basicanswers()->delete();
+
+        Cache::put($Key,$bluePrintString,1800);
         Cache::put($bluePrintString."question",0,1800);
         Cache::put($bluePrintString."people",0,1800);
         Cookie::queue($bluePrintString,$Key,120);
@@ -60,7 +67,24 @@ class SurveyHostController extends Controller
         return Cache::get($bluePrintString."people");
     }
 
-    public function join(Request $request,$Key){//PHP Session id
+    public function endLobby(Request $request){
+        $validated = $request->validate([
+            'bluePrintString' => 'required',
+        ]);
+        $bluePrintString = $validated['bluePrintString'];
+        $Key = Cookie::get($bluePrintString);
+        if (Cache::get($Key) !== $bluePrintString||!Cache::has($bluePrintString."question"))
+            abort(404);
+
+        Cache::forget($Key);
+        Cache::forget($bluePrintString);
+        Cache::forget($bluePrintString."people");
+        Cache::forget($bluePrintString."question");
+        Cache::put($Key,'end',10);
+
+    }
+
+    public function join(Request $request,$Key){
         $bluePrintString = Cache::get($Key);
         if (!Cache::has($bluePrintString."people")){
             abort(404);
@@ -88,6 +112,7 @@ class SurveyHostController extends Controller
         if (!Cache::has($bluePrintString."question")){
             abort(404);
         }
+        Cookie::queue($bluePrintString,$validated['Key'],120);
         return Cache::get($bluePrintString."question");
     }
     public function updateQuestion(Request $request){
@@ -108,8 +133,11 @@ class SurveyHostController extends Controller
             'lastKnownQuestion' => 'integer',
         ]);
         $bluePrintString = Cache::get($validated['Key']);
+        if ($bluePrintString === 'end'){
+            return array('surveyIsFinished' => 'true');
+        }
         if (!Cache::has($bluePrintString."question")){
-            abort(404);
+            abort(404,array('surveyIsFinished' => true));
         }
         $currentQuestion = Cache::get($bluePrintString."question");
         if ($currentQuestion == $validated['lastKnownQuestion'])
@@ -119,7 +147,7 @@ class SurveyHostController extends Controller
            $Questions = Cache::remember('questions'.$Key,18, function () use ($bluePrintString) {//TODO Change the Numbers
                return collect(BluePrint::where('url_string', '=', $bluePrintString)->first()->questions()->with('terminquestion')->with('terminquestion.termins')->get());
            });
-           return $Questions->getNth($currentQuestion);
+           return $Questions->getNth($currentQuestion-1);//-1 Cause they start at 1
         });
         return array('newQuestion' => true,'question' => $Question, 'currentQuestion' => $currentQuestion);
 

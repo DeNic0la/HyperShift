@@ -50,6 +50,7 @@ Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->
 Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
 Route::post('/host/update',[SurveyHostController::class , 'updateQuestion'])->name('updateQuestion');
+Route::post('/host/end',[SurveyHostController::class , 'endLobby'])->name('endLobby');
 //Join
 Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
 Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');

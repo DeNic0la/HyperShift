@@ -16,7 +16,7 @@
                             <div class="flex items-center rounded-lg space-x-4 p-4">
                                 <a :href="'/join/'+this.join_key" target="_blank" title="Join">
                                     <div class="flex items-center p-4 bg-blue-600 text-white rounded-lg">
-                                        <span class="material-icons w-7 h-7">open_in_new</span>
+                                        <ExternalLinkIcon class="h-8 w-8 text-white" />
                                     </div>
                                 </a>
                                 <div class="flex-1 rounded-lg">
@@ -34,18 +34,17 @@
                         </div>
                     </InfoDisplayer>
                     <div v-else>
-                        <LiveResultsDisplayer>
+                        <LiveResultsDisplayer :question="bluePrintData.questions[currentQuestion -1]">
 
                         </LiveResultsDisplayer>
                         <div class="flex justify-center">
                             <div class="flex flex-row content-around">
-                                <button class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer">Prev</button>
-                                <button class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer">Next</button>
+                                <button @click="prevQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled="this.currentQuestion === 1 || !this.questionNumberInSync">Prev</button>
+                                <button v-if="this.currentQuestion !== this.numberOfQuestions" @click="nextQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">Next</button>
+                                <button v-else @click="endSurvey" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">End Survey</button>
                             </div>
                         </div>
                     </div>
-
-
 
                 </div>
             </div>
@@ -60,6 +59,7 @@ import AppLayout from "../../Layouts/AppLayout";
 import InfoDisplayer from "./InfoDisplayer";
 import Button from "../../Jetstream/Button";
 import LiveResultsDisplayer from "./LiveResultsDisplayer";
+import {ExternalLinkIcon} from '@heroicons/vue/outline';
 
 export default {
     name: "Container",
@@ -68,6 +68,7 @@ export default {
         InfoDisplayer,
         AppLayout,
         LiveResultsDisplayer,
+        ExternalLinkIcon,
     },
     props: ['join_key'],
     data()  {
@@ -76,6 +77,7 @@ export default {
             bluePrintData: {},
             numberOfPeople: 0,
             currentQuestion: 0,
+            numberOfQuestions: 0,
             questionNumberInSync: true,
         }
     },
@@ -93,6 +95,33 @@ export default {
                     this.updateLobby();
             })
         },
+        endSurvey(){
+            axios.post('/host/end',{
+                bluePrintString: this.bluePrintString,
+            }).then( response => {
+                if (response.status !== 200){
+                    setTimeout(this.endSurvey,1000)
+                }
+                else {
+                    // Succsess
+                    //TODO Give Download Option and Stuff
+                    window.location.href = '/';
+                }
+            }).catch(error => {
+                console.log(error);
+                setTimeout(this.endSurvey,500)
+            })
+        },
+        nextQuestion(){
+            if (this.questionNumberInSync && this.currentQuestion !== this.numberOfQuestions){
+                this.updateCurrentQuestionToServer(this.currentQuestion+1);
+            }
+        },
+        prevQuestion(){
+            if (this.questionNumberInSync && this.currentQuestion !== 1){
+                this.updateCurrentQuestionToServer(this.currentQuestion-1);
+            }
+        },
         startSurvey(){
             this.questionNumberInSync = false;
             this.currentQuestion++;
@@ -104,6 +133,7 @@ export default {
         },
         updateCurrentQuestionToServer(questionNumber){
             this.questionNumberInSync = false;
+            this.currentQuestion = questionNumber;
             axios.post('/host/update',{
 
                 bluePrintString: this.bluePrintString,
@@ -137,6 +167,7 @@ export default {
         }).then( response => {
             if (response.status === 200){
                 this.bluePrintData = response.data;
+                this.numberOfQuestions = this.bluePrintData.questions.length;
             }
         })
         this.interval = setInterval(() => this.updateLobby(), 5000);
