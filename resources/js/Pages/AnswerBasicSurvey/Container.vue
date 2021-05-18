@@ -77,15 +77,12 @@ export default {
             })
         },
         updateTerminAnswers(id){
-            console.log(id);
             if (this.terminAnswers.includes(id)){
                 this.terminAnswers.splice( this.terminAnswers.indexOf(id), 1);
             }
             else {
                 this.terminAnswers.push(id);
             }
-            const index = array.indexOf(element);
-            array.splice(index, 1);
         },
         updateConfidenceAnswers(value){
             this.confidenceAnswers[value.questionId] = value.value;
@@ -102,8 +99,8 @@ export default {
             if (response.status === 200) {
                 this.survey = response.data;
                 this.survey.questions.forEach(surveyQuestion => {
-                    if (surveyQuestion.hasOwnProperty('confidencevotequestion')) {
-                        this.confidenceAnswers[surveyQuestion.confidencevotequestion.id] = 1;
+                    if (surveyQuestion.confidencevotequestion !== null) {
+                            this.confidenceAnswers[surveyQuestion.confidencevotequestion.id] = 1;
                     }
                 })
             }

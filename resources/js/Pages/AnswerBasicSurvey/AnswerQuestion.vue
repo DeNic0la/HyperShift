@@ -36,9 +36,7 @@ export default {
     methods: {
 
     },
-    beforeCreate() {
 
-    }
 }
 </script>
 

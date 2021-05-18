@@ -15,9 +15,6 @@ export default {
     components: {QuestionResults},
     props: ['survey', 'confidenceVoteAnswers'],
     mounted() {
-        /*this.survey.questions.forEach(question => {
-            console.log(question);
-        })*/
         console.log(this.$props.survey);
     }
 }

@@ -7,6 +7,10 @@
 
                 </ConfidenceVoteOptions>
 
+                <ConfidenceChart :answer="answer" :maxValue="question.maxValue">
+
+                </ConfidenceChart>
+
             </div>
         </div>
 
@@ -14,11 +18,16 @@
 
 <script>
 import ConfidenceVoteOptions from "@/Pages/SurveyResults/ConfidenceVoteOptions";
+import ConfidenceChart from "@/Pages/Charts/ConfidenceChart";
 export default {
     name: "SurveyConfidenceVoteResult",
-    components: {ConfidenceVoteOptions},
+    components: {ConfidenceChart, ConfidenceVoteOptions},
     props: ['question', 'answer'],
     methods: {
+    },
+    data()  {
+        return {
+        }
     },
     mounted() {
         console.log(this.answer);
@@ -27,8 +36,7 @@ export default {
         average: function (){
             let answerCount = 0;
             let totalValue = 0;
-            let average = 0;
-             for( let [key, value] of Object.entries(this.answer)){
+            for( let [key, value] of Object.entries(this.answer)){
                  answerCount += value;
                  totalValue += (key * value);
              }

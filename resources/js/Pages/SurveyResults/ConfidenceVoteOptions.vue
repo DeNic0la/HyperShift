@@ -14,7 +14,7 @@
 <script>
 export default {
     name: "ConfidenceVoteOptions",
-    props: ['option', 'average',],
+    props: ['option', 'average'],
     data() {
         return {
 
