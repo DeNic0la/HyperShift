@@ -2,8 +2,7 @@
 
 ## Allgemeines
 
-Der FrageTyp TerminQuestion ist eine spezielle form von Checkbox-Fragen. Die Frage hat Termine zur Auswahl und der beantwortende User kann jeden Termin anklicken der für ihn passt.
-Der FrageTyp ConfidenceVoteQuestion ist eine Frage, bei welcher der User als Antwort einen Wert von 1 bis n
+Der FrageTyp ConfidenceVoteQuestion ist eine Frage, bei welcher der User als Antwort einen Wert von 1 bis n wählen kann. Dabei kann der Ersteller der Umfrage den Maximalwert festlegen.
 
 ### Migration:
 
@@ -23,5 +22,5 @@ Gehört zu einer Frage.
 Hat 0-n Termin, sollte jedoch nicht 0 Termin haben.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcwNDcxNzY1Ml19
+eyJoaXN0b3J5IjpbMTQ0NTcxMDk5OF19
 -->
