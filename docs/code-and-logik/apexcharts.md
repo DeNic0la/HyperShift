@@ -6,7 +6,7 @@ Apexcharts ist eine moderne Chart-Bibliothek mit welcher man verschiedene Arten 
 
 ### ConfidenceVote Resultate:
 
-Um die ConfidenceVote-Resultate darzustellen haben wir ein Line-
+Um die ConfidenceVote-Resultate darzustellen haben wir ein Area-Chart verwendet
 
 | Name | Zweck |
 | :--- | :--- |
@@ -29,5 +29,5 @@ BasicSurvey hat 0-n Question. Das sind die Fragen welche in der Umfrage erstellt
 BasicSurvey hat 0-n BasicAnswer. Die Antworten zu den Umfragen werden über dieses Model gespeichert.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkwODA4Njk0MiwzNjIzMDczXX0=
+eyJoaXN0b3J5IjpbLTE4NTU3MzExNjUsMzYyMzA3M119
 -->
