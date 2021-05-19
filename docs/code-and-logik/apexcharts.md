@@ -2,7 +2,7 @@
 
 ## Allgemeines
 
-Apexcharts ist ein 
+Apexcharts ist eine moderne Chart-Bibliothek mit welcher man verschiedene Arten von Charts darstellen kann z.B. 
 
 ### Migration:
 
@@ -27,5 +27,5 @@ BasicSurvey hat 0-n Question. Das sind die Fragen welche in der Umfrage erstellt
 BasicSurvey hat 0-n BasicAnswer. Die Antworten zu den Umfragen werden über dieses Model gespeichert.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0NDkyNTg2NV19
+eyJoaXN0b3J5IjpbNjY2Mjc5MTQ3XX0=
 -->
