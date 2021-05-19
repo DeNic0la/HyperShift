@@ -18,10 +18,10 @@ Der FrageTyp ConfidenceVoteQuestion ist eine Frage, bei welcher der User als Ant
 
 Gehört zu einer Frage.
 
-#### termins\(\)
+#### confidencevoteanswer\(\)
 
-Hat 0-n Termin, sollte jedoch nicht 0 Termin haben.
+Hat 0-n Antworten.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTc1OTM0MzYsMTQ0NTcxMDk5OF19
+eyJoaXN0b3J5IjpbMTc0Mjc1MTYxOCwxNDQ1NzEwOTk4XX0=
 -->
