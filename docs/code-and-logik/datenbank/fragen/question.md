@@ -17,14 +17,14 @@ Dieses Model ist ein Frage. Question dient als eine art Zwischentabelle zwischen
 
 Question hat 0 oder 1 terminquestion.
 
-#### [confidencevote\(\)](frage-typen/terminquestion.md)
+#### [confidencevotequestion\(\)](frage-typen/confidencevotequestion.md)
 
-Question hat 0 oder 1 terminquestion.
+Question hat 0 oder 1 ConfidenceVoteFrage.
 
 #### [questionable\(\)](question.md)
 
 Question hat eine [Polymorphic Relation](https://laravel.com/docs/8.x/eloquent-relationships#polymorphic-relationships) zu [BasicSurvey](basicsurvey.md) oder BluePrint.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU5ODUzNjcwN119
+eyJoaXN0b3J5IjpbLTg0MDcxNjkyOF19
 -->
