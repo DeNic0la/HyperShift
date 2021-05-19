@@ -7,7 +7,7 @@ Apexcharts ist eine moderne Chart-Bibliothek mit welcher man verschiedene Arten 
 ### ConfidenceVote Resultate:
 
 Um die ConfidenceVote-Resultate darzustellen haben wir ein Area-Chart verwendet. Dabei sieht man auf der Y-Achse wieviel mal ein Wert gewählt worden ist und auf der X-Achse sieht man alle Werte welche dem Beantworter zur Verfügung stehen also 1 bis maxValue.
-![Alt](chart.PNG)
+![Alt]((file:///C:/Users/lucaa/Desktop/chart.PNG))
 
 | Name | Zweck |
 | :--- | :--- |
@@ -30,6 +30,6 @@ BasicSurvey hat 0-n Question. Das sind die Fragen welche in der Umfrage erstellt
 BasicSurvey hat 0-n BasicAnswer. Die Antworten zu den Umfragen werden über dieses Model gespeichert.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTY4MTM4NjAzOCwtMTg1NTczMTE2NSwzNj
+eyJoaXN0b3J5IjpbMTg0MDg3OTM2OSwtMTg1NTczMTE2NSwzNj
 IzMDczXX0=
 -->
