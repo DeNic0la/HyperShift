@@ -4,15 +4,22 @@
     <div class="relative text-gray-600 focus-within:text-gray-400">
         <input type="text" :id="'copyValue'+id" :value="toCopy" class="py-2 text-sm rounded-md w-2/3 pl-2 focus:outline-none focus:bg-white focus:text-gray-900">
         <button @click="copyCode" :class="buttonStyles" class="font-semibold py-2 px-4 ml-5 border rounded">
-            {{buttonText}}
+            {{copyButtonText}}
+        </button>
+
+        <button @click="goToResults(resultsLocation)" class="font-semibold py-2 px-4 ml-5 border rounded">
+            {{resultButtonText}}
         </button>
     </div>
+
 
 </template>
 
 <script>
+import CopyLink from "@/Pages/CopyLink";
 export default {
     name: "MySurveysDisplayer",
+    components: {CopyLink},
     props: ['survey_name', 'url_string', 'id'],
     data: function () {
         return {
@@ -27,11 +34,16 @@ export default {
                 'bg-green-700': false,
                 'text-gray-800': false,
             },
-            buttonText: "Kopieren",
-            toCopy:  this.toCopy = document.getElementById("baseURL").value +'/survey/fill/'+this.url_string,
+            copyButtonText: "Kopieren",
+            resultButtonText: "Resultate",
+            toCopy: this.toCopy = document.getElementById("baseURL").getAttribute('content') + '/survey/fill/'+this.url_string,
+            resultsLocation: document.getElementById("baseURL").getAttribute('content') + '/survey/results/'+this.url_string,
         }
     },
     methods: {
+        goToResults(resultsLocation){
+            window.location.assign(resultsLocation);
+        },
         copyCode(){
             //this.toCopy  =
             let testingCodeToCopy = document.querySelector('#copyValue'+ this.id)
@@ -57,7 +69,7 @@ export default {
         },negateAllValues(obj){
         Object.keys(obj).forEach(function(key){ obj[key] = !obj[key] });
         return obj;
-    }
+        }
     }
 }
 
