@@ -45,6 +45,18 @@ module.exports = {
                     border: '#79180F',
                     boarderhover: '#661308',
                 },
+                add: {
+                    DEFAULT: '#00B2CA',
+                    hover: '#20BAC5',
+                    border: '#04A6C2',
+                    boarderhover: '#0899BA',
+                },
+                code: {
+                    DEFAULT: '#5EEB5B',
+                    hover: '#61FF7E',
+                    border: '#62AB37',
+                    boarderhover: '#62AB37',
+                },
             },
         },
     },
