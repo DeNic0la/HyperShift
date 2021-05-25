@@ -70,10 +70,10 @@
 
                     <div class="flex flex-col mb-4 md:mx-10">
                         <div class="flex justify-around items-stretch px-12">
-                            <button @click="createSurvey(1)" class="block mx-auto bg-pink-500 border border-pink-800 hover:bg-pink-700 text-white font-bold py-4 px-10 rounded object-none object-center">
+                            <button @click="createSurvey(1)" class="block mx-auto text-white font-bold py-4 px-10 rounded object-none object-center border-create-border hover:border-create-boarderhover bg-create hover:bg-create-hover">
                                 Umfrage erstellen
                             </button>
-                            <button @click="createSurvey(2)" class="block mx-auto bg-blue-500 border border-blue-800 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded object-none object-center">
+                            <button @click="createSurvey(2)" class="block mx-auto bg-blue-500 border border-blue-800 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded object-none object-center border-host-border hover:border-host-boarderhover bg-host hover:bg-host-hover">
                                 Blueprint erstellen
                             </button>
                         </div>
