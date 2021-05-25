@@ -59,10 +59,10 @@
                     </div>
                     <div class="flex flex-col mb-4 md:mx-10">
                         <label class="mb-2 font-bold text-lg text-grey-darkest" for="SurveyName">Name der Umfrage:</label>
-                        <input type="text" v-model="surveyName" id="SurveyName" class="border py-2 px-3 text-grey-darkest" name="name">
+                        <input type="text" @blur="writeToLocalStorage" v-model="surveyName" id="SurveyName" class="border py-2 px-3 text-grey-darkest" name="name">
                     </div>
                     <div class="flex flex-col mb-4 md:mx-10">
-                        <QuestionManager :questions="questions">
+                        <QuestionManager @questionUpdate="writeToLocalStorage" :questions="questions">
 
                         </QuestionManager>
                     </div>
@@ -113,13 +113,13 @@ export default {
             toCopy: "",
             buttonStyles: {
                 'bg-transparent':true,
-                'hover:bg-blue-500':true,
-                'text-blue-700':true,
+                'hover:bg-answer-hover':true,
+                'text-answer':true,
                 'hover:text-white': true,
-                'border-blue-500':true,
+                'border-answer-border':true,
                 'hover:border-transparent':true,
                 'bg-opacity-75': false,
-                'bg-green-700': false,
+                'bg-answer': false,
                 'text-gray-800':false,
             },
             buttonText: "Kopieren",
@@ -137,6 +137,8 @@ export default {
                     questions: this.questions,
                 }).then( response =>{
                     if (response.status === 201){
+                        localStorage.removeItem('surveyName');
+                        localStorage.removeItem('questions');
                         console.log(response.data['url_string']);
                         this.url_string = response.data['url_string'];
                         this.showMessage = true;
@@ -149,6 +151,12 @@ export default {
                     }
                 });
             }
+        },
+        writeToLocalStorage(){
+          const parsedQuestions = JSON.stringify(this.questions);
+          localStorage.setItem('questions',parsedQuestions);
+          localStorage.setItem('surveyName',this.surveyName);
+
         },
         validateFields(){
             return true;
@@ -182,6 +190,19 @@ export default {
             Object.keys(obj).forEach(function(key){ obj[key] = !obj[key] });
             return obj;
         }
+    },
+    mounted() {
+        if (localStorage.getItem('questions')){
+            try{
+                this.questions = JSON.parse(localStorage.getItem('questions'));
+            }
+            catch (e) {
+                localStorage.removeItem('questions')
+            }
+        }
+
+        if (localStorage.getItem('surveyName'))
+            this.surveyName = localStorage.getItem('surveyName');
     }
 }
 </script>

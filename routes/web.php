@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyHostController;
 use Illuminate\Foundation\Application;
@@ -17,14 +18,15 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-});
+
+Route::get('/', [HomeController::class , 'show'])->name('dashboard');
+Route::get('/validateSurvey', [HomeController::class , 'validateJoinCode']);
 
 Route::get('/dashboard', function () {
-    return redirect('/');
     abort(404);
-})->name('dashboard');
+});
+
+Route::get('/result', [HomeController::class , 'result'])->name('result');
 
 Route::get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
