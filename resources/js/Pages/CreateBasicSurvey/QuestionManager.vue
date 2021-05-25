@@ -1,9 +1,10 @@
 <template>
     <div class="flex flex-col mb-4 md:mx-10">
         <div v-for="(question, index) in questions">
-            <question :question="question">
+            <question @deleteQuestion="deleteQuestion($event)" @questionUpdate="$emit('questionUpdate')" :question="question">
 
             </question>
+
         </div>
 
         <div class="inline-flex">
@@ -21,6 +22,7 @@ export default {
     name: "QuestionManager",
     components: {Question},
     props: ['questions'],
+    emits:['questionUpdate'],
     data: function () {
         return {
 
@@ -30,6 +32,15 @@ export default {
         addQuestion(){
             var tmpQuestion = {type: 0, name: ""};
             this.questions.push(tmpQuestion);
+            this.$emit('questionUpdate');
+        },
+        deleteQuestion(questionName){
+            for (const key in this.questions){
+                if (!this.questions.hasOwnProperty(key))
+                    continue;
+                if (this.questions[key].name === questionName)
+                    this.questions.splice(key,1);
+            }
         },
     }
 }

@@ -2,12 +2,12 @@
     <label>
         <div class="flex flex-col mb-4 md:mx-10">
             <div class="mb-2 text-grey-darkest">Name der Terminfrage:</div>
-            <input type="text" v-model="question.name" class="border py-2 px-3 text-grey-darkest">
+            <input @blur="$emit('questionUpdate')" type="text" v-model="question.name" class="border py-2 px-3 text-grey-darkest">
         </div>
     </label>
     <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
         <div v-for="(option,index) in question.options">
-            <TerminOption :TerminDetails="option">
+            <TerminOption @questionUpdate="$emit('questionUpdate')" :TerminDetails="option">
 
             </TerminOption>
         </div>
@@ -24,6 +24,7 @@
 import TerminOption from "./TerminOption";
 export default {
     name: "TerminQuestion",
+    emits:['questionUpdate'],
     components: {TerminOption},
     props: ['question'],
     data: function (){
@@ -35,6 +36,7 @@ export default {
         this.question.options = [];
         var toPush = {datetime: null, duration: null};
         this.question.options.push(toPush);
+        this.$emit('questionUpdate');
 
     },
     methods: {

@@ -14,13 +14,6 @@
 
                         </SurveyDisplayer>
 
-                        <label v-if="$page.props.user == null">
-                            <div class="flex flex-col mb-4 md:mx-10">
-                                <div class="mb-2 text-grey-darkest">Dein Name: </div>
-                                <input type="text" v-model="name">
-                            </div>
-                        </label>
-
                         <SurveyResultsManager v-if="survey.length !== 0" :survey="survey" :confidenceVoteAnswers="confidenceVoteAnswers">
 
                         </SurveyResultsManager>
