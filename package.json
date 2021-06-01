@@ -27,7 +27,6 @@
         "vue-loader": "^16.1.2"
     },
     "dependencies": {
-        "@heroicons/react": "^1.0.1",
         "@heroicons/vue": "^1.0.1",
         "apexcharts": "^3.26.2",
         "vue-tailwind": "^2.1.3",
