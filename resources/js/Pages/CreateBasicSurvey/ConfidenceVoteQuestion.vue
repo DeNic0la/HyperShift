@@ -1,7 +1,7 @@
 <template>
     <label>
         <div class="flex flex-col mb-4 md:mx-10">
-            <div class="mb-2 text-grey-darkest">Fragesatz:</div>
+            <div class="mb-2 text-grey-darkest">ConfidenceVote-Frage:</div>
             <input type="text" @blur="$emit('questionUpdate')" v-model="question.name" class="border py-2 px-3 text-grey-darkest">
         </div>
     </label>

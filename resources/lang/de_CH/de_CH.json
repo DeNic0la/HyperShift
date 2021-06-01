@@ -43,6 +43,8 @@
     "Verify Email Address": "E-Mail-Adresse bestätigen",
     "Verify Your Email Address": "Bestätigen Sie Ihre E-Mail-Adresse",
     "We won't ask for your password again for a few hours.": "Wir werden Sie für die nächsten paar Stunden nicht mehr nach dem Passwort fragen.",
+    "Whoops! Something went wrong.": "Ooops! Etwas ist schief gelaufen.",
     "You are logged in!": "Sie sind eingeloggt!",
-    "Your email address is not verified.": "Ihre E-Mail Adresse wurde noch nicht bestätigt."
+    "Your email address is not verified.": "Ihre E-Mail Adresse wurde noch nicht bestätigt.",
+
 }

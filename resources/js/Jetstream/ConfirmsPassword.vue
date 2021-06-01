@@ -1,3 +1,4 @@
+
 <template>
     <span>
         <span @click="startConfirmingPassword">
@@ -13,7 +14,7 @@
                 {{ content }}
 
                 <div class="mt-4">
-                    <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
+                    <jet-input type="password" class="mt-1 block w-3/4" placeholder="Passwort"
                                 ref="password"
                                 v-model="form.password"
                                 @keyup.enter="confirmPassword" />
@@ -24,7 +25,7 @@
 
             <template #footer>
                 <jet-secondary-button @click="closeModal">
-                    Cancel
+                    Abbrechen
                 </jet-secondary-button>
 
                 <jet-button class="ml-2" @click="confirmPassword" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
@@ -47,13 +48,13 @@
 
         props: {
             title: {
-                default: 'Confirm Password',
+                default: 'Passwort bestätigen',
             },
             content: {
-                default: 'For your security, please confirm your password to continue.',
+                default: 'Zu Ihrer Sicherheit bestätigen Sie bitte Ihr Passwort, um fortzufahren.',
             },
             button: {
-                default: 'Confirm',
+                default: 'Bestätigen',
             }
         },
 

@@ -157,5 +157,6 @@ return [
         'title'                 => 'Titel',
         'username'              => 'Benutzername',
         'year'                  => 'Jahr',
+        'current_password'      => 'Aktuelles Passwort',
     ],
 ];

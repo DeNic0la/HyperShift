@@ -10,7 +10,7 @@
         <div class="container mx-auto pt-5" v-for="(item,index) in survey">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
-
+                    <p class="text-2xl font-bold "> {{item['survey_name']}}</p>
                     <CopyLink  :url_string="item['url_string']" :id="index">
                     </CopyLink>
 

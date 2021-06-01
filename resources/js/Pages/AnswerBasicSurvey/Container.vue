@@ -6,22 +6,23 @@
             </h2>
         </template>
 
-        <dialog-modal  :show="showMessage" @close="goHome">
+
+        <dialog-modal :max-width="'sm'" :show="showMessage" @close="goHome">
             <template #title>
-                Wollen Sie die Resultate ansehen?
+                <div class="text-center">
+                    Wollen Sie die Resultate ansehen?
+                </div>
             </template>
 
             <template #content>
-
-                <div class="relative text-gray-600 focus-within:text-gray-400">
-
-                    <button @click="goToResults()" class="font-semibold py-2 px-4 ml-5 border text-white rounded border-result-border hover:border-result-boarderhover bg-result hover:bg-result-hover">
+                <div class="relative text-gray-600 focus-within:text-gray-400 flex flex-row justify-center space-x-5">
+                    <button @click="goToResults()" class="w-36 font-semibold py-2 px-4 border text-white rounded border-result-border hover:border-result-boarderhover bg-result hover:bg-result-hover">
                         Resultate
                     </button>
-
-
+                    <button @click="goHome()" class="w-36 font-semibold py-2 px-4 border text-white rounded border-code-border hover:border-code-boarderhover bg-code hover:bg-code-hover">
+                        Home
+                    </button>
                 </div>
-
             </template>
 
             <template #footer>
@@ -30,6 +31,7 @@
                 </secondary-button>
             </template>
         </dialog-modal>
+
 
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
