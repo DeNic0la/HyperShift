@@ -6,17 +6,17 @@
             </div>
 
             <div class="mt-8 text-2xl">
-                Welcome to HyperShift!
+                Willkommen bei HyperShift
             </div>
 
             <div class="mt-6 text-gray-500">
-                HyperShift is a tool to create and fill out surveys quickly and easily.
+                HyperShift ist ein Tool um einfach und schnell Umfragen zu erstellen und auszufüllen.
             </div>
         </div>
 
         <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2">
             <div class="p-6">
-                    <SurveyJoiner />
+                <SurveyCreator />
             </div>
 
             <div class="p-6 border-t border-gray-200 md:border-t-0 md:border-l">
@@ -50,19 +50,9 @@
             </div>
 
             <div class="p-6 border-t border-gray-200 md:border-l">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">Authentication</div>
-                </div>
-
-                <div class="ml-12">
-                    <div class="mt-2 text-sm text-gray-500">
-                        With HyperShift you can create and send surveys even if you are not logged in. However, if you want to reuse all the surveys you have already created, you can simply register and log in. We also offer 2 factor authentication and a password reset function.
-                    </div>
-                </div>
+                <SurveyJoiner />
             </div>
+
         </div>
     </div>
 </template>
@@ -71,9 +61,11 @@
     import JetApplicationLogo from '@/Jetstream/ApplicationLogo'
     import SurveyJoiner from "../Pages/Home/SurveyJoiner";
     import ResultViewer from "../Pages/Home/ResultViewer";
+    import SurveyCreator from "@/Pages/Home/SurveyCreator";
 
     export default {
         components: {
+            SurveyCreator,
             JetApplicationLogo,
             SurveyJoiner,
             ResultViewer,

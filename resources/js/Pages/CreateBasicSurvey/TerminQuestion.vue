@@ -1,7 +1,7 @@
 <template>
     <label>
         <div class="flex flex-col mb-4 md:mx-10">
-            <div class="mb-2 text-grey-darkest">Name der Terminfrage:</div>
+            <div class="mb-2 text-grey-darkest">Terminfrage:</div>
             <input @blur="$emit('questionUpdate')" type="text" v-model="question.name" class="border py-2 px-3 text-grey-darkest">
         </div>
     </label>
@@ -12,7 +12,7 @@
             </TerminOption>
         </div>
         <button @click="addOption" class=" w-2/3 block mx-auto bg-indigo-600 hover:g-green-700 text-white font-bold py-2 px-4 rounded object-none object-center">
-            + Termin Option Hinzufügen
+            + Termin Option hinzufügen
         </button>
     </div>
 

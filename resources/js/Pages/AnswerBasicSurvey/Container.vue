@@ -6,6 +6,33 @@
             </h2>
         </template>
 
+
+        <dialog-modal :max-width="'sm'" :show="showMessage" @close="goHome">
+            <template #title>
+                <div class="text-center">
+                    Wollen Sie die Resultate ansehen?
+                </div>
+            </template>
+
+            <template #content>
+                <div class="relative text-gray-600 focus-within:text-gray-400 flex flex-row justify-center space-x-5">
+                    <button @click="goToResults()" class="w-36 font-semibold py-2 px-4 border text-white rounded border-result-border hover:border-result-boarderhover bg-result hover:bg-result-hover">
+                        Resultate
+                    </button>
+                    <button @click="goHome()" class="w-36 font-semibold py-2 px-4 border text-white rounded border-code-border hover:border-code-boarderhover bg-code hover:bg-code-hover">
+                        Home
+                    </button>
+                </div>
+            </template>
+
+            <template #footer>
+                <secondary-button @click.native="goHome">
+                    Home
+                </secondary-button>
+            </template>
+        </dialog-modal>
+
+
         <div class="container mx-auto pt-5">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
@@ -42,13 +69,15 @@
 <script>
 import SurveyDisplayer from "./SurveyDisplayer";
 import AppLayout from "../../Layouts/AppLayout";
+import DialogModal from "../../Jetstream/DialogModal";
 import AnswerManager from "./AnswerManager";
 export default {
     name: "Container",
     components: {
         AnswerManager,
         SurveyDisplayer,
-        AppLayout
+        AppLayout,
+        DialogModal,
     },
     data()  {
         return {
@@ -57,6 +86,7 @@ export default {
             terminAnswers: [],
             confidenceAnswers: {},
             name: "",
+            showMessage: false,
         }
     },
     methods:{
@@ -72,7 +102,7 @@ export default {
                 }
             }).then(response => {
                 if (response.status === 200){
-                    window.location.href = '/';
+                    this.showMessage = true;
                 }
             })
         },
@@ -86,6 +116,13 @@ export default {
         },
         updateConfidenceAnswers(value){
             this.confidenceAnswers[value.questionId] = value.value;
+        },
+        goHome(){
+            window.location.href = '/'
+        },
+        goToResults(){
+            let resultsLocation = document.getElementById("baseURL").getAttribute('content') + '/survey/results/'+this.survey.url_string
+            window.location.assign(resultsLocation)
         }
     },
     created() {

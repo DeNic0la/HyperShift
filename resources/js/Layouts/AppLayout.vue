@@ -18,13 +18,13 @@
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link href="/" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Home
                                 </jet-nav-link>
                                 <jet-nav-link :href="route('create')" :active="route().current('create')">
-                                    Create
+                                    Erstellen
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('result')" :active="route().current('result')">
-                                    Result
+                                <jet-nav-link :href="route('MySurveys')" v-if="$page.props.user">
+                                    Meine Umfragen
                                 </jet-nav-link>
                             </div>
                         </div>
@@ -50,23 +50,23 @@
                                             <!-- Team Management -->
                                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Manage Team
+                                                    Team verwalten
                                                 </div>
 
                                                 <!-- Team Settings -->
                                                 <jet-dropdown-link :href="route('teams.show', $page.props.user.current_team)">
-                                                    Team Settings
+                                                    Team Einstellungen
                                                 </jet-dropdown-link>
 
                                                 <jet-dropdown-link :href="route('teams.create')" v-if="$page.props.jetstream.canCreateTeams">
-                                                    Create New Team
+                                                    Neues Team erstellen
                                                 </jet-dropdown-link>
 
                                                 <div class="border-t border-gray-100"></div>
 
                                                 <!-- Team Switcher -->
                                                 <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Switch Teams
+                                                    Teams wechseln
                                                 </div>
 
                                                 <template v-for="team in $page.props.user.all_teams" :key="team.id">
@@ -107,15 +107,15 @@
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            Account verwalten
                                         </div>
 
                                         <jet-dropdown-link :href="route('profile.show')">
-                                            Profile
+                                            Profil
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link :href="route('MySurveys')">
-                                            My Surveys
+                                            Meine Umfragen
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
@@ -127,7 +127,7 @@
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <jet-dropdown-link as="button">
-                                                Log Out
+                                                Ausloggen
                                             </jet-dropdown-link>
                                         </form>
                                     </template>
@@ -135,11 +135,11 @@
 
                                 <div v-else class="top-0 px-6 py-4 sm:block">
                                         <inertia-link :href="route('login')" class="text-sm text-gray-700 underline">
-                                            Log in
+                                            Einloggen
                                         </inertia-link>
 
                                         <inertia-link :href="route('register')" class="ml-4 text-sm text-gray-700 underline">
-                                            Register
+                                            Registrieren
                                         </inertia-link>
                                 </div>
                             </div>

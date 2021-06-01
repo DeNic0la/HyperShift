@@ -9,7 +9,7 @@
 
         <div class="inline-flex">
             <button @click="addQuestion"  class=" w-2/3 block mx-auto bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded object-none object-center border-add-border hover:border-add-boarderhover bg-add hover:bg-add-hover">
-                + Frage Hinzufügen
+                + Frage hinzufügen
             </button>
 
         </div>
