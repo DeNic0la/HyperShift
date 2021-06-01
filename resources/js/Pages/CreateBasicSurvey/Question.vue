@@ -8,6 +8,7 @@
                         <option hidden value="0" disabled>Wählen Sie eine Option aus</option>
                         <option value="1">Terminfrage</option>
                         <option value="2">Confidence-Vote Frage</option>
+                        <option value="3">Checkbox-Frage</option>
                     </select>
                 </div>
             </label>
@@ -23,6 +24,11 @@
 
                 </confidence-vote-question>
             </div>
+            <div v-if="question.type === '3'">
+                <checkbox-question @questionUpdate="$emit('questionUpdate')" :question="question">
+
+                </checkbox-question>
+            </div>
         </div>
         <div class="w-1/12 pt-5">
             <button @click="$emit('deleteQuestion',question.name)">
@@ -37,10 +43,11 @@ import TerminQuestion from "./TerminQuestion";
 import ConfidenceVoteQuestion from "@/Pages/CreateBasicSurvey/ConfidenceVoteQuestion";
 import DialogModal from "@/Jetstream/DialogModal";
 import {XIcon} from "@heroicons/vue/outline";
+import CheckboxQuestion from "@/Pages/CreateBasicSurvey/CheckboxQuestion";
 export default {
     name: "Question",
     emits:['questionUpdate','deleteQuestion'],
-    components: {DialogModal, ConfidenceVoteQuestion, TerminQuestion, XIcon},
+    components: {CheckboxQuestion, DialogModal, ConfidenceVoteQuestion, TerminQuestion, XIcon},
     props: ['question'],
 }
 </script>

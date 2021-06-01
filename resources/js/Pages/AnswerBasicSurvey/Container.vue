@@ -48,7 +48,7 @@
                         </div>
                     </label>
 
-                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateTerminAnswers($event)" @ConfidenceValue="updateConfidenceAnswers($event)">
+                    <AnswerManager :answers="answers" :questions="survey['questions']" @CheckboxTicked="updateTerminAnswers($event)" @ConfidenceValue="updateConfidenceAnswers($event)" @CheckboxAnswerTicked="updateCheckboxAnswers($event)">
 
                     </AnswerManager>
 
@@ -84,6 +84,7 @@ export default {
             surveyString: "",
             survey: [],
             terminAnswers: [],
+            checkboxAnswers: [],
             confidenceAnswers: {},
             name: "",
             showMessage: false,
@@ -97,6 +98,7 @@ export default {
                 params:{
                     terminAnswers: this.terminAnswers,
                     confidenceAnswers: this.confidenceAnswers,
+                    checkboxAnswers: this.checkboxAnswers,
                     survey: this.survey.url_string,
                     name: this.name
                 }
@@ -112,6 +114,14 @@ export default {
             }
             else {
                 this.terminAnswers.push(id);
+            }
+        },
+        updateCheckboxAnswers(id){
+            if (this.checkboxAnswers.includes(id)){
+                this.checkboxAnswers.splice( this.checkboxAnswers.indexOf(id), 1);
+            }
+            else {
+                this.checkboxAnswers.push(id);
             }
         },
         updateConfidenceAnswers(value){

@@ -22,6 +22,10 @@ class BasicAnswer extends Model
         return $this->hasMany(ConfidenceVoteAnswer::class, 'answerId');
     }
 
+    public function checkboxanswers(){
+        return $this->hasMany(CheckboxAnswer::class, 'answerId');
+    }
+
     public function user(){
         return $this->belongsTo(User::class, 'fillerId');
     }

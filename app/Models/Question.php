@@ -19,6 +19,10 @@ class Question extends Model
         return $this->hasOne(ConfidenceVoteQuestion::class, 'questionId');
     }
 
+    public function checkboxquestion(){
+        return $this->hasOne(CheckboxQuestion::class, 'questionId');
+    }
+
     public function questionable(){
         return $this->morphTo();
     }
