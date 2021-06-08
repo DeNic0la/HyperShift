@@ -11,7 +11,7 @@
                             <!-- Logo -->
                             <div class="flex-shrink-0 flex items-center">
                                 <inertia-link href="/">
-                                    <jet-application-mark class="block h-9 w-auto" />
+                                    <jet-application-mark/>
                                 </inertia-link>
                             </div>
 
