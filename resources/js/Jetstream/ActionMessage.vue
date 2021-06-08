@@ -1,6 +1,7 @@
 <template>
     <div>
-        <transition leave-active-class="transition ease-in duration-1000" leave-from-class="opacity-100" leave-to-class="opacity-0">
+        <transition leave-active-class="transition ease-in duration-300" leave-from-class="opacity-100" leave-to-class="opacity-0"
+                    enter-active-class="transition ease-out duration-1000" enter-to-class="opacity-100" enter-from-class="opacity-0">
             <div v-show="on" class="text-sm text-gray-600">
                 <slot />
             </div>
