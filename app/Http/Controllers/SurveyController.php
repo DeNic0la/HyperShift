@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\BluePrint;
+use App\Models\ConfidenceVoteQuestion;
 use App\Models\Question;
+use App\Models\TerminAnswer;
 use App\Models\TerminQuestion;
 use App\Models\Termin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use ParagonIE\ConstantTime\Base64DotSlash;
 
 class SurveyController extends Controller
 {
@@ -46,7 +49,7 @@ class SurveyController extends Controller
                 ]);
                 $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
                 foreach ($question['options'] as $option) {
-                    if ($option['datetime'] == null || $option['duration'] == null){
+                    if ($option['datetime'] == null || $option['duration'] == null) {
 
                     }
                     else{
@@ -57,10 +60,16 @@ class SurveyController extends Controller
                         $Termin = $QuestionInDB->termins()->save($Termin);
                     }
                 }
+            } elseif ($question['type'] == 2) {
+                foreach ($question['options'] as $option) {
+                    $ConfidenceVoteQuestion = new ConfidenceVoteQuestion([
+                        'name' => $question['name'],
+                        'maxValue' => $option['maxValue']
+                    ]);
+                    $ConfidenceQuestionInDB = $BaseQuestion->confidencevotequestion()->save($ConfidenceVoteQuestion);
+                }
             }
         }
-
-
 
 
         return response($survey,201);
@@ -126,14 +135,18 @@ class SurveyController extends Controller
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
-        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->first();//api resource
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')
+        ->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->with('questions.confidencevotequestion')->first();//api resource
     }
+
     public function answerSurvey(Request $request){
         $validated = $request->validate([
-            'answers' => 'required',
+            'confidenceAnswers' => 'nullable',
+            'terminAnswers' => 'nullable',
             'survey' => 'required',
             'name' => ''
         ]);
+
         if (BasicSurvey::where('url_string', '=', $validated['survey'])->count() == 0){
             abort(404);
         }
@@ -143,17 +156,47 @@ class SurveyController extends Controller
             'fillerId' => Auth::id(),
             'fillerName' => $validated['name'] == "" ? null:$validated['name'],
         ]);
-        foreach ($validated['answers'] as $item){
-            $Answer->terminanswers()->create([
-                'terminId' => $item
-            ]);
+        if(isset($validated['terminAnswers'])) {
+            foreach ($validated['terminAnswers'] as $terminAnswer) {
+                $Answer->terminanswers()->create([
+                    'terminId' => $terminAnswer
+                ]);
+            }
         }
-
-
+        if(isset($validated['confidenceAnswers'])) {
+            $confidenceAnswers = json_decode($validated['confidenceAnswers'], true);
+                foreach ($confidenceAnswers as $key => $value) {
+                $Answer->confidencevoteanswer()->create([
+                    'value' => $value,
+                    'questionId' => intval($key)
+                ]);
+            }
+        }
         return $request;
+
     }
     public function getUserSurveys(){
         $userId = Auth::id();
         return BasicSurvey::where('owner_id', '=', $userId)->get();
+    }
+
+    public function results(Request $request,$surveyString){
+        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
+            abort(404);
+        }
+        return Inertia::render('SurveyResults/Container');
+    }
+
+    public function getResults(Request $request){
+        $validated = $request->validate([
+            'surveyString' => 'required',
+        ]);
+        return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')
+            ->with('questions.confidencevotequestion')
+            ->with('basicanswers')
+            ->with('basicanswers.user')->with('basicanswers.terminanswers')
+            ->with('basicanswers.terminanswers.termin')
+            ->with('basicanswers.confidencevoteanswer')
+            ->first();
     }
 }

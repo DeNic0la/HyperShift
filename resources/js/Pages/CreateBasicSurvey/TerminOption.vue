@@ -3,14 +3,14 @@
         <label>
             <div class="flex flex-col mb-4 md:mx-10">
                 <div class="mb-2 text-grey-darkest">Terminstart: </div>
-                <input type="datetime-local" v-model="TerminDetails.datetime">
+                <input type="datetime-local" @blur="$emit('questionUpdate')" v-model="TerminDetails.datetime">
 
             </div>
         </label>
         <label>
             <div class="flex flex-col mb-4 md:mx-10">
                 <div class="mb-2 text-grey-darkest">Termindauer (Minuten): </div>
-                <input type="number" step="10" min="0" v-model="TerminDetails.duration">
+                <input @blur="$emit('questionUpdate')" type="number" step="10" min="0" v-model="TerminDetails.duration">
 
             </div>
         </label>
@@ -20,6 +20,7 @@
 <script>
 export default {
     name: "TerminOption",
+    emits:['questionUpdate'],
     props: ['TerminDetails'],
     mounted() {
         console.log(this.TerminDetails);

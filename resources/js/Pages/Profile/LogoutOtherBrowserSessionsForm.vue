@@ -5,12 +5,12 @@
         </template>
 
         <template #description>
-            Manage and log out your active sessions on other browsers and devices.
+            Verwalten und melden Sie ihre aktiven Sitzungen auf anderen Browsern und Geräten ab.
         </template>
 
         <template #content>
             <div class="max-w-xl text-sm text-gray-600">
-                If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.
+                Falls erforderlich, können Sie sich von allen anderen Browser-Sitzungen auf allen Ihren Geräten abmelden. Einige Ihrer letzten Sitzungen sind unten aufgeführt; diese Liste ist jedoch möglicherweise nicht vollständig. Wenn Sie das Gefühl haben, dass Ihr Konto kompromittiert wurde, sollten Sie auch Ihr Passwort aktualisieren.
             </div>
 
             <!-- Other Browser Sessions -->
@@ -36,7 +36,7 @@
                                 {{ session.ip_address }},
 
                                 <span class="text-green-500 font-semibold" v-if="session.is_current_device">This device</span>
-                                <span v-else>Last active {{ session.last_active }}</span>
+                                <span v-else>Zuletzt aktiv {{ session.last_active }}</span>
                             </div>
                         </div>
                     </div>
@@ -45,25 +45,25 @@
 
             <div class="flex items-center mt-5">
                 <jet-button @click="confirmLogout">
-                    Log Out Other Browser Sessions
+                    Andere Browser-Sitzungen abmelden
                 </jet-button>
 
                 <jet-action-message :on="form.recentlySuccessful" class="ml-3">
-                    Done.
+                    Erledigt.
                 </jet-action-message>
             </div>
 
             <!-- Log Out Other Devices Confirmation Modal -->
             <jet-dialog-modal :show="confirmingLogout" @close="closeModal">
                 <template #title>
-                    Log Out Other Browser Sessions
+                    Andere Browser-Sitzungen abmelden
                 </template>
 
                 <template #content>
-                    Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.
+                    Bitte geben Sie Ihr Passwort ein, um zu bestätigen, dass Sie sich von Ihren anderen Browser-Sitzungen auf allen Ihren Geräten abmelden möchten.
 
                     <div class="mt-4">
-                        <jet-input type="password" class="mt-1 block w-3/4" placeholder="Password"
+                        <jet-input type="password" class="mt-1 block w-3/4" placeholder="Passwort"
                                     ref="password"
                                     v-model="form.password"
                                     @keyup.enter="logoutOtherBrowserSessions" />
@@ -74,11 +74,11 @@
 
                 <template #footer>
                     <jet-secondary-button @click="closeModal">
-                        Cancel
+                        Abbrechen
                     </jet-secondary-button>
 
                     <jet-button class="ml-2" @click="logoutOtherBrowserSessions" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                        Log Out Other Browser Sessions
+                        Andere Browser-Sitzungen abmelden
                     </jet-button>
                 </template>
             </jet-dialog-modal>

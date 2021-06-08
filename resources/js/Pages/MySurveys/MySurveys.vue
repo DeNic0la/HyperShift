@@ -10,9 +10,9 @@
         <div class="container mx-auto pt-5" v-for="(item,index) in survey">
             <div class="w-full bg-white rounded shadow-lg p-8 m-4">
                 <div class="flex space-x-4 flex-col">
-
-                    <MySurveysDisplayer :survey_name="item['survey_name']" :url_string="item['url_string']" :id="index">
-                    </MySurveysDisplayer>
+                    <p class="text-2xl font-bold "> {{item['survey_name']}}</p>
+                    <CopyLink  :url_string="item['url_string']" :id="index">
+                    </CopyLink>
 
                 </div>
             </div>
@@ -26,9 +26,11 @@
 import AppLayout from "@/Layouts/AppLayout";
 import SurveyDisplayer from "../AnswerBasicSurvey/SurveyDisplayer";
 import MySurveysDisplayer from "@/Pages/MySurveys/MySurveysDisplayer";
+import CopyLink from "@/Pages/CopyLink";
 export default {
     name: "MySurveys",
     components: {
+        CopyLink,
         MySurveysDisplayer,
         SurveyDisplayer,
         AppLayout

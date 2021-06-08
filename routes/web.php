@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyHostController;
-use App\Http\Controllers\HomeController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,11 +19,12 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', [HomeController::class, 'show']);
 
-Route::get('/dashboard', function () {
-    abort(404);
-})->name('dashboard');//TODO REMOVE This
+Route::get('/', [HomeController::class , 'show'])->name('dashboard');
+Route::get('/validateSurvey', [HomeController::class , 'validateJoinCode']);
+
+
+Route::get('/result', [HomeController::class , 'result'])->name('result');
 
 Route::get('/create', function () {
     return Inertia::render('CreateBasicSurvey/CreateSurvey');
@@ -44,6 +46,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
 
 Route::get('/getUserSurveys',[SurveyController::class , 'getUserSurveys']);
 
+Route::get('/survey/results/{surveyString}', [SurveyController::class , 'results'])->name('results');
+
+Route::get('/getResults',[SurveyController::class , 'getResults']);
 
 //Host
 Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
