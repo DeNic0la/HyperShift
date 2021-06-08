@@ -5,9 +5,11 @@
             {{ option.content }}
         </label>
 
-        <label>
-            Diese Option wurde {{count}} gewählt
-        </label>
+        <div v-if="count != 0">
+            <label>
+                Diese Option wurde {{count}} gewählt
+            </label>
+        </div>
 
     </div>
 </template>
