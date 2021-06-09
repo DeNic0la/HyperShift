@@ -4,13 +4,9 @@
         <label class="inline-flex items-center mt-3">
             {{ option.content }}
         </label>
-
-        <div v-if="count != 0">
             <label>
-                Diese Option wurde {{count}} gewählt
+                Diese Option wurde {{count ?? 0}}-mal gewählt
             </label>
-        </div>
-
     </div>
 </template>
 

@@ -8,14 +8,20 @@
 import VueApexCharts from 'vue3-apexcharts';
 export default {
     name: "CheckboxChart",
-    props: ['options', 'count'],
+    props: ['options', 'answers'],
     components: {
         apexcharts: VueApexCharts,
     },
     methods: {
         mapChartData(){
-            this.chartOptions.xaxis.categories = this.options;
-            this.series[0].data = Object.values(this.count);
+            let dataX = [];
+            let dataY = [];
+            this.answers.forEach(answer => {
+                dataX.push(answer.content);
+                dataY.push(answer.count);
+            })
+            this.chartOptions.xaxis.categories = dataX;
+            this.series[0].data = dataY;
         }
     },
     data: function() {
