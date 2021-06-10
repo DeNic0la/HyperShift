@@ -30,7 +30,7 @@ export default {
             })
             .then(response => {
                 if (response.status === 200){
-                    this.answer = response.data;
+                    this.answer = response.data;//Object.assign({},response.data);
                 }
             })
         },
@@ -41,7 +41,7 @@ export default {
             if (Object.keys(this.answer).length === 0||this.question.confidencevotequestion === undefined){
                 return results;
             }
-            this.answer.forEach(confidenceanswer => {
+            Object.values(this.answer).forEach(confidenceanswer => {
                 if(results.hasOwnProperty(confidenceanswer.value)) {
                     results[confidenceanswer.value]++;
                 }
