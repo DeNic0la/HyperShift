@@ -1,4 +1,4 @@
-<template>
+s<template>
 
     <h3 v-if="currentQuestion > 0" class="TestClassWithNoCss">Frage {{currentQuestion}} von {{AmountOfQuestions}}</h3>
     <div v-else class="absolute inset-0 z-10 bg-white opacity-80" >
@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <LiveQuestionManager @CheckboxTicked="updateArray($event)" :question="question" :answers="answers" :isDisabled="questionIsAnswered" v-if="question !== null">
+    <LiveQuestionManager @CheckboxTicked="updateTerminAnswers($event)" @ConfidenceValue="updateConfidenceAnswers($event)"  :question="question" :answers="{'terminAnswers': terminAnswers,'confidenceAnswers':confidenceAnswers}" :isDisabled="questionIsAnswered" v-if="question !== null">
 
     </LiveQuestionManager>
     <div class="flex flex-col mb-4 md:mx-10" v-if="question !== null">
@@ -31,17 +31,21 @@ export default {
     components:{LiveQuestionManager},
     methods:{
         sendAnswers(){
+            if (this.questionIsAnswered)
+                return;
             axios.post('/live/answer',null,{
                 params:{
-                    answers: this.answers,
+                    terminAnswers: this.terminAnswers,
+                    confidenceAnswers: this.confidenceAnswers,
                     Key: this.Key,
                     questionNumber: this.currentQuestion,
                 }
             }).then(response => {
                 if (response.status === 200){
                     this.questionIsAnswered = true;
-                    this.answeredQuestions[this.question.id] = {answers: this.answers};
-                    this.answers = [];
+                    this.answeredQuestions[this.question.id] = {terminanswer: this.terminAnswers,confidenceAnswers: this.confidenceAnswers};
+                    this.terminAnswers = [];
+                    this.confidenceAnswers = {};
                 }
             })
         },
@@ -60,35 +64,43 @@ export default {
                     if (response.data.newQuestion === true){
                         this.question = response.data.question;
                         this.currentQuestion = response.data.currentQuestion;
-                        if (this.answeredQuestions[this.question.id]?.answers === undefined){
+                        if (this.answeredQuestions[this.question.id]?.terminAnswers === undefined &&
+                            this.answeredQuestions[this.question.confidencevotequestion?.id]?.confidenceAnswers === undefined){
                             this.answers = [];
                             this.questionIsAnswered = false;
+                            if (this.question.hasOwnProperty('confidencevotequestion')) {
+                                console.log(this.question.confidencevotequestion);
+                                this.confidenceAnswers[this.question.confidencevotequestion.id] = 1;
+                            }
                         }
                         else{
-                            this.answers = this.answeredQuestions[this.question.id]?.answers;
+                            this.terminAnswers = this.answeredQuestions[this.question.id].terminAnswers ?? [];
+                            this.confidenceAnswers = this.answeredQuestions[this.question.id]?.confidenceAnswers ?? {};
                             this.questionIsAnswered = true;
                         }
 
 
                     }
-                    else if(response.data.surveyIsFinished === true){
-                        // Close Survey With Message
-                        clearInterval(this.myInterval);
-                        window.location.href = '/';
-                        //TODO Display cleaner "survy is finished"- Message
+                }
+                else if(response.data.surveyIsFinished === true){
+                    // Close Survey With Message
+                    clearInterval(this.myInterval);
+                    window.location.href = '/';
+                    //TODO Display cleaner "survy is finished"- Message
 
-                    }
                 }
             })
         },
-        updateArray(id){
-            console.log(id);
-            if (this.answers.includes(id)){
-                this.answers.splice( this.answers.indexOf(id), 1);
+        updateTerminAnswers(id){
+            if (this.terminAnswers.includes(id)){
+                this.terminAnswers.splice( this.terminAnswers.indexOf(id), 1);
             }
             else {
-                this.answers.push(id);
+                this.terminAnswers.push(id);
             }
+        },
+        updateConfidenceAnswers(value){
+            this.confidenceAnswers[value.questionId] = value.value;
         },
     },
 
@@ -98,7 +110,8 @@ export default {
             intervalTimeOut: 3000,
             question: null,
             myInterval: null,
-            answers: [],
+            terminAnswers: [],
+            confidenceAnswers: {},
             questionIsAnswered: false,
             answeredQuestions: {},
         }

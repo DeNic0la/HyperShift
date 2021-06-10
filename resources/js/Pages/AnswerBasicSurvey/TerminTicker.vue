@@ -21,7 +21,7 @@ export default {
         }
     },
     beforeUpdate() {
-        this.isChecked = this.answers.includes(this.option.id);
+        this.isChecked = this.answers?.includes(this.option.id);
     }
 }
 </script>

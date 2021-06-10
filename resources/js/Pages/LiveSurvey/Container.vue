@@ -2,7 +2,7 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight pb-5">
-                <div class="float-left">Live Survey</div>
+                <div class="float-left">Live Umfrage</div>
             </h2>
         </template>
 

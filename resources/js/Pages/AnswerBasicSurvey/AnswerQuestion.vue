@@ -6,13 +6,13 @@
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
             <div v-if="question['terminquestion']">
-                <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)" :isDisabled="isDisabled">
+                <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers.terminAnswers ?? answers" @CheckboxTicked="$emit('CheckboxTicked',$event)" :isDisabled="isDisabled">
 
                 </AnswerTerminQuestion>
             </div>
 
             <div v-if="question['confidencevotequestion']">
-                <AnswerConfidenceQuestion :question="question['confidencevotequestion']" :answer="answers" @ConfidenceValue="$emit('ConfidenceValue',$event)">
+                <AnswerConfidenceQuestion :question="question['confidencevotequestion']" :answer="answers.confidenceAnswers ?? answers" @ConfidenceValue="$emit('ConfidenceValue',$event)">
 
                 </AnswerConfidenceQuestion>
             </div>

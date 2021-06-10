@@ -119,6 +119,16 @@ class SurveyController extends Controller
                     }
                 }
             }
+            elseif ($question['type'] == 2) {
+                foreach ($question['options'] as $option) {
+                    $ConfidenceVoteQuestion = new ConfidenceVoteQuestion([
+                        'name' => $question['name'],
+                        'maxValue' => $option['maxValue']
+                    ]);
+                    $ConfidenceQuestionInDB = $BaseQuestion->confidencevotequestion()->save($ConfidenceVoteQuestion);
+                }
+            }
+
         }
 
 

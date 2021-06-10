@@ -51,11 +51,12 @@ Route::get('/survey/results/{surveyString}', [SurveyController::class , 'results
 Route::get('/getResults',[SurveyController::class , 'getResults']);
 
 //Host
-Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
 Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
 Route::post('/host/update',[SurveyHostController::class , 'updateQuestion'])->name('updateQuestion');
 Route::post('/host/end',[SurveyHostController::class , 'endLobby'])->name('endLobby');
+Route::get('/host/result',[SurveyHostController::class , 'result'])->name('getResult');
+Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
 //Join
 Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
 Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');

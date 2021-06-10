@@ -1,6 +1,6 @@
 <template>
     <div class="example">
-        <apexcharts width="500" height="350" type="area" :options="chartOptions" :series="series"></apexcharts>
+        <apexcharts width="500" height="350" type="area" :options="chartOptions" ref="realtimeChart" :series="series"></apexcharts>
     </div>
 </template>
 
@@ -24,6 +24,18 @@ export default {
             this.series[0].data = dataY;
 
             //return value === 1 ? dataY: dataX;
+        }
+    },
+    watch:{
+        answer: function (oldVal,newVal){
+            let dataY = [];
+            for(let i = 1; i <= this.maxValue; i++){
+                dataY.push(this.answer[i] || 0);
+            }
+            this.series = [{
+                name: 'Resultat',
+                data: dataY,
+            }];
         }
     },
     data: function() {

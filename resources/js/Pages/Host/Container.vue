@@ -2,8 +2,8 @@
     <app-layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight pb-5">
-                <div class="float-left">Host Survey</div>
-                <div class="float-right">Joined People: {{numberOfPeople}}</div>
+                <div class="float-left">Live Umfrage</div>
+                <div class="float-right">Anzahl Leute: {{numberOfPeople}}</div>
             </h2>
         </template>
 
@@ -34,14 +34,15 @@
                         </div>
                     </InfoDisplayer>
                     <div v-else>
-                        <LiveResultsDisplayer :question="bluePrintData.questions[currentQuestion -1]">
+                        <LiveResultsDisplayer :question="bluePrintData.questions[currentQuestion -1]" :bluePrintString="bluePrintString">
 
                         </LiveResultsDisplayer>
                         <div class="flex justify-center">
                             <div class="flex flex-row content-around">
-                                <button @click="prevQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled="this.currentQuestion === 1 || !this.questionNumberInSync">Prev</button>
-                                <button v-if="this.currentQuestion !== this.numberOfQuestions" @click="nextQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">Next</button>
-                                <button v-else @click="endSurvey" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">End Survey</button>
+                                <button @click="prevQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled="this.currentQuestion === 1 || !this.questionNumberInSync">Zurück</button>
+                                <button class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700">{{currentQuestion}}</button>
+                                <button v-if="this.currentQuestion !== this.numberOfQuestions" @click="nextQuestion" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">Weiter</button>
+                                <button v-else @click="endSurvey" class="block p-3 m-5 text-lg rounded-lg font-semibold bg-blue-700 hover:bg-blue-500 cursor-pointer" :disabled=" !this.questionNumberInSync">Beenden</button>
                             </div>
                         </div>
                     </div>

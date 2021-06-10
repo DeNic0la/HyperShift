@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BasicSurvey;
 use App\Models\BluePrint;
+use App\Models\Question;
 
+use App\Models\TerminAnswer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -39,6 +41,7 @@ class SurveyHostController extends Controller
         $BA = BluePrint::where('url_string', '=', $bluePrintString)->first()->basicanswers()->get();
         foreach ($BA as $basicAnswer){
             $basicAnswer->terminanswers()->delete();
+            $basicAnswer->confidencevoteanswer()->delete();
         }
         BluePrint::where('url_string', '=', $bluePrintString)->first()->basicanswers()->delete();
 
@@ -53,7 +56,7 @@ class SurveyHostController extends Controller
         $validated = $request->validate([
             'bluePrintString' => 'required',
         ]);
-        return BluePrint::where('url_string', '=', $validated['bluePrintString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->first();
+        return BluePrint::where('url_string', '=', $validated['bluePrintString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->with('questions.confidencevotequestion')->first();
     }
     public function runLobby(Request $request){
         $validated = $request->validate([
@@ -137,7 +140,7 @@ class SurveyHostController extends Controller
             return array('surveyIsFinished' => 'true');
         }
         if (!Cache::has($bluePrintString."question")){
-            abort(404,array('surveyIsFinished' => true));
+            abort(404, json_encode(array('surveyIsFinished' => true)));
         }
         $currentQuestion = Cache::get($bluePrintString."question");
         if ($currentQuestion == $validated['lastKnownQuestion'])
@@ -145,7 +148,7 @@ class SurveyHostController extends Controller
         $Key = $validated['Key'];
         $Question = Cache::remember('question' . strval($currentQuestion) . strval($Key),20,function () use ($bluePrintString,$currentQuestion,$Key) {
            $Questions = Cache::remember('questions'.$Key,18, function () use ($bluePrintString) {//TODO Change the Numbers
-               return collect(BluePrint::where('url_string', '=', $bluePrintString)->first()->questions()->with('terminquestion')->with('terminquestion.termins')->get());
+               return collect(BluePrint::where('url_string', '=', $bluePrintString)->first()->questions()->with('terminquestion')->with('terminquestion.termins')->with('confidencevotequestion')->get());
            });
            return $Questions->getNth($currentQuestion-1);//-1 Cause they start at 1
         });
@@ -154,7 +157,8 @@ class SurveyHostController extends Controller
     }
     public function answer(Request $request){
         $validated = $request->validate([
-            'answers' => 'required',
+            'terminAnswers' => '',
+            'confidenceAnswers' => '',
             'Key' => 'required|integer',
             'questionNumber' => 'required|integer'
         ]);
@@ -170,15 +174,56 @@ class SurveyHostController extends Controller
         $Answer = $BluePrint->basicanswers()->create([
             'fillerId' => Auth::id(),
             'fillerName' => '',
-        ]);
-        foreach ($validated['answers'] as $item){
-            $Answer->terminanswers()->create([
-                'terminId' => $item
-            ]);
+        ]);//TODO only create one of this
+
+        if(isset($validated['terminAnswers'])) {
+            foreach ($validated['terminAnswers'] as $terminAnswer) {
+                $Answer->terminanswers()->create([
+                    'terminId' => $terminAnswer
+                ]);
+            }
+        }
+        if(isset($validated['confidenceAnswers'])) {
+            $confidenceAnswers = json_decode($validated['confidenceAnswers'], true);
+            foreach ($confidenceAnswers as $id => $value) {
+                $Answer->confidencevoteanswer()->create([
+                    'value' => $value,
+                    'questionId' => intval($id)
+                ]);
+            }
         }
 
 
         return $request;
+    }
+
+    public function result(Request $request){//TODO change 12 to 120
+        $validated = $request->validate([
+            'bluePrintString' => 'required',
+            'questionId' => 'required',
+        ]);
+        $Question = Cache::remember("Question".$validated['questionId'],12, function () use ($validated) {
+           return Question::find($validated['questionId']);
+        });
+        if ($Question->terminquestion()->exists()){
+            $Termins = Cache::remember("TerminQuestion".$validated['questionId'],12, function () use ($Question) {
+                $TerminQuestion = $Question->terminquestion()->first();
+                return $TerminQuestion->termins()->get();
+            });
+            $CountOnTermins = array();
+            foreach ($Termins as $termin){
+                $CountOnTermins[$termin->id] = TerminAnswer::where('terminId',$termin->id)->count();
+            }
+            return json_encode($CountOnTermins);
+        }
+        else if ($Question->confidencevotequestion()->exists()){
+            $ConfidenceQuestion = Cache::remember("ConfidenceQuestion".$validated['questionId'],12, function () use ($Question) {
+                return  $Question->confidencevotequestion()->first();
+            });
+            $ConfidenceAnswers = $ConfidenceQuestion->confidencevoteanswer()->get();
+            return json_encode($ConfidenceAnswers);
+        }
+        abort(404);
     }
 
 }
