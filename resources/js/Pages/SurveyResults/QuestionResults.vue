@@ -16,6 +16,12 @@
                 </SurveyConfidenceVoteResult>
             </div>
 
+            <div v-if="question['checkboxquestion']">
+                <SurveyCheckboxResults :question="question.checkboxquestion" :answers="checkboxAnswers">
+
+                </SurveyCheckboxResults>
+            </div>
+
         </div>
     </div>
 </template>
@@ -23,10 +29,11 @@
 <script>
 import SurveyTerminResult from "@/Pages/SurveyResults/SurveyTerminResult";
 import SurveyConfidenceVoteResult from "@/Pages/SurveyResults/SurveyConfidenceVoteResult";
+import SurveyCheckboxResults from "@/Pages/SurveyResults/SurveyCheckboxResults";
 export default {
     name: "QuestionResults",
-    components: {SurveyConfidenceVoteResult, SurveyTerminResult},
-    props: ['question', 'answers', 'confidenceVoteAnswers'],
+    components: {SurveyCheckboxResults, SurveyConfidenceVoteResult, SurveyTerminResult},
+    props: ['question', 'answers', 'confidenceVoteAnswers', 'checkboxAnswers'],
 }
 </script>
 

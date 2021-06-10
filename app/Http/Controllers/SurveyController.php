@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\BasicAnswer;
 use App\Models\BasicSurvey;
 use App\Models\BluePrint;
+use App\Models\CheckboxQuestion;
 use App\Models\ConfidenceVoteQuestion;
 use App\Models\Question;
+use App\Models\Selection;
 use App\Models\TerminAnswer;
 use App\Models\TerminQuestion;
 use App\Models\Termin;
@@ -67,6 +69,21 @@ class SurveyController extends Controller
                         'maxValue' => $option['maxValue']
                     ]);
                     $ConfidenceQuestionInDB = $BaseQuestion->confidencevotequestion()->save($ConfidenceVoteQuestion);
+                }
+            } elseif ($question['type'] == 3) {
+                $toSave = new CheckboxQuestion([
+                    'name' => $question['name']
+                ]);
+                $QuestionInDB = $BaseQuestion->checkboxquestion()->save($toSave);
+                foreach ($question['options'] as $option) {
+                    if ($option['content'] == null) {
+
+                    } else {
+                        $Selection = new Selection([
+                            'content' => $option['content'],
+                        ]);
+                        $Selection = $QuestionInDB->selections()->save($Selection);
+                    }
                 }
             }
         }
@@ -136,13 +153,17 @@ class SurveyController extends Controller
             'surveyString' => 'required',
         ]);
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')
-        ->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->with('questions.confidencevotequestion')->first();//api resource
+
+        ->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->with('questions.confidencevotequestion')->with('questions.checkboxquestion')
+            ->with('questions.checkboxquestion.selections')->first();
+
     }
 
     public function answerSurvey(Request $request){
         $validated = $request->validate([
             'confidenceAnswers' => 'nullable',
             'terminAnswers' => 'nullable',
+            'checkboxAnswers' => 'nullable',
             'survey' => 'required',
             'name' => ''
         ]);
@@ -172,6 +193,13 @@ class SurveyController extends Controller
                 ]);
             }
         }
+        if(isset($validated['checkboxAnswers'])) {
+            foreach ($validated['checkboxAnswers'] as $checkboxAnswer) {
+                $Answer->checkboxanswers()->create([
+                    'selectionId' => $checkboxAnswer
+                ]);
+            }
+        }
         return $request;
 
     }
@@ -193,10 +221,14 @@ class SurveyController extends Controller
         ]);
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')
             ->with('questions.confidencevotequestion')
+            ->with('questions.checkboxquestion')
+            ->with('questions.checkboxquestion.selections')
             ->with('basicanswers')
             ->with('basicanswers.user')->with('basicanswers.terminanswers')
             ->with('basicanswers.terminanswers.termin')
             ->with('basicanswers.confidencevoteanswer')
+            ->with('basicanswers.checkboxanswers')
+            ->with('basicanswers.checkboxanswers.selection')
             ->first();
     }
 }

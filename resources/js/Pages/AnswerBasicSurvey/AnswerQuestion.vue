@@ -17,6 +17,12 @@
                 </AnswerConfidenceQuestion>
             </div>
 
+            <div v-if="question['checkboxquestion']">
+                <AnswerCheckboxQuestion :question="question['checkboxquestion']" :answer="answers" @CheckboxAnswerTicked="$emit('CheckboxAnswerTicked',$event)">
+
+                </AnswerCheckboxQuestion>
+            </div>
+
         </div>
 
 
@@ -28,11 +34,12 @@
 <script>
 import AnswerTerminQuestion from "./AnswerTerminQuestion";
 import AnswerConfidenceQuestion from "./AnswerConfidenceQuestion";
+import AnswerCheckboxQuestion from "@/Pages/AnswerBasicSurvey/AnswerCheckboxQuestion";
 export default {
     name: "AnswerQuestion",
-    components: {AnswerTerminQuestion, AnswerConfidenceQuestion},
+    components: {AnswerCheckboxQuestion, AnswerTerminQuestion, AnswerConfidenceQuestion},
     props: ['question', 'answer','isDisabled','answers'],
-    emits: ['CheckboxTicked', 'ConfidenceValue'],
+    emits: ['CheckboxTicked', 'ConfidenceValue', 'CheckboxAnswerTicked'],
     methods: {
 
     },

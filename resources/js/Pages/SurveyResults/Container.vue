@@ -14,7 +14,7 @@
 
                         </SurveyDisplayer>
 
-                        <SurveyResultsManager v-if="survey.length !== 0" :survey="survey" :confidenceVoteAnswers="confidenceVoteAnswers">
+                        <SurveyResultsManager v-if="survey.length !== 0" :survey="survey" :confidenceVoteAnswers="confidenceVoteAnswers" :checkboxAnswers="checkboxAnswers">
 
                         </SurveyResultsManager>
 
@@ -41,6 +41,7 @@ export default {
             survey: {},
             name: "",
             confidenceVoteAnswers: {},
+            checkboxAnswers: {}
         }
     },
     created() {
@@ -54,6 +55,7 @@ export default {
             if (response.status === 200) {
                 this.survey = response.data;
                 this.sortConfidenceVote(this.survey.basicanswers);
+                this.sortCheckbox(this.survey.basicanswers);
             }
         })
     },
@@ -76,7 +78,27 @@ export default {
                 }
             })
            this.confidenceVoteAnswers = results;
-        }
+        },
+        sortCheckbox(answers){
+            let results = {};
+            this.survey.questions.forEach(question => {
+                if(question.hasOwnProperty("checkboxquestion")){
+                    question.checkboxquestion.selections.forEach(selection => {
+                        results[selection.id] = {content: selection.content, count: 0};
+                    })
+                }
+            })
+            answers.forEach(answer => {
+                if(answer.checkboxanswers !== null){
+                    console.log(answer.checkboxanswers);
+                    for(let i = 0; i < answer.checkboxanswers.length; i++){
+                        results[answer.checkboxanswers[i].selectionId].count += 1;
+                    }
+                }
+            })
+            this.checkboxAnswers = results;
+        },
+
     }
 }
 </script>
