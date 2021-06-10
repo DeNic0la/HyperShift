@@ -67,9 +67,11 @@
                             <button @click="createSurvey(1)" class="block mx-auto text-white font-bold py-4 px-10 rounded object-none object-center border-create-border hover:border-create-boarderhover bg-create hover:bg-create-hover">
                                 Umfrage erstellen
                             </button>
+                            <!--
                             <button @click="createSurvey(2)" class="block mx-auto bg-blue-500 border border-blue-800 hover:bg-blue-700 text-white font-bold py-4 px-10 rounded object-none object-center border-host-border hover:border-host-boarderhover bg-host hover:bg-host-hover">
                                 Blueprint erstellen
                             </button>
+                            -->
                         </div>
                     </div>
 

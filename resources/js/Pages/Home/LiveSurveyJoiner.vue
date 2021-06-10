@@ -1,6 +1,6 @@
 <template>
 
-    <ActionMessage :on="alert.show" class="z-50 static">
+ <!--   <ActionMessage :on="alert.show" class="z-50 static">
         <div class="alert flex flex-row items-center bg-red-200 p-5 rounded border-b-2 border-red-300 absolute left-0 top-20">
             <div class="alert-icon flex items-center bg-red-100 border-2 border-red-500 justify-center h-10 w-10 flex-shrink-0 rounded-full">
 				<span class="text-red-500">
@@ -40,7 +40,7 @@
                 <button @click="joinLiveSurvey" class="px-4 rounded-r-lg bg-green-400  text-gray-800 font-bold p-2 uppercase border-green-500 hover:bg-green-500 hover:border-green-600 border-t border-b border-r">Join</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
