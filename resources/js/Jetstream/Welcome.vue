@@ -20,7 +20,8 @@
             </div>
 
             <div class="p-6 border-t border-gray-200 md:border-t-0 md:border-l">
-                <LiveSurveyJoiner />
+                <!--<LiveSurveyJoiner />-->
+                <AuthentificationInfo />
             </div>
 
             <div class="p-6 border-t border-gray-200">
@@ -41,9 +42,11 @@
     import SurveyJoiner from "../Pages/Home/SurveyJoiner";
     import ResultViewer from "../Pages/Home/ResultViewer";
     import SurveyCreator from "@/Pages/Home/SurveyCreator";
+    import AuthentificationInfo from "@/Pages/Home/AuthentificationInfo";
 
     export default {
         components: {
+            AuthentificationInfo,
             SurveyCreator,
             JetApplicationLogo,
             LiveSurveyJoiner,
