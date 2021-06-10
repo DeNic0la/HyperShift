@@ -20,23 +20,22 @@ use ParagonIE\ConstantTime\Base64DotSlash;
 
 class SurveyController extends Controller
 {
-    public function create(Request $request)
-    {
+    public function create(Request $request){
         $validated = $request->validate([
             'name' => 'required',
             'questions' => 'required',
         ]);
         //TODO REMOVE THIS, THIS IS ONLY DEV
-        if (app()->environment(['local', 'dev'])) {
-            if ($validated['name'] == 'DoError') {
-                return response('Error for Development', 200);
+        if (app()->environment(['local','dev'])){
+            if ($validated['name'] == 'DoError'){
+                return response('Error for Development',200);
             }
         }
 
         $randomString = "";
         do {
             $randomString = Str::random(15);
-        } while (BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
         $survey = BasicSurvey::create([
             'owner_id' => Auth::id(),
             'survey_name' => $validated['name'],
@@ -44,18 +43,18 @@ class SurveyController extends Controller
         ]);
 
         $Questions = $request['questions'];
-
-        foreach ($Questions as $question) {
+        foreach ($Questions as $question){
             $BaseQuestion = $survey->questions()->create();
-            if ($question['type'] == 1) {
-                $toSave = new TerminQuestion([
+            if ($question['type'] == 1){
+                $toSave= new TerminQuestion([
                     'name' => $question['name']
                 ]);
                 $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
                 foreach ($question['options'] as $option) {
                     if ($option['datetime'] == null || $option['duration'] == null) {
 
-                    } else {
+                    }
+                    else{
                         $Termin = new Termin([
                             'time' => $option['datetime'],
                             'duration' => $option['duration']
@@ -90,27 +89,26 @@ class SurveyController extends Controller
         }
 
 
-        return response($survey, 201);
+        return response($survey,201);
 
     }
 
-    public function createBluePrint(Request $request)
-    {
+    public function createBluePrint(Request $request){
         $validated = $request->validate([
             'name' => 'required',
             'questions' => 'required',
         ]);
         //TODO REMOVE THIS, THIS IS ONLY DEV
-        if (app()->environment(['local', 'dev'])) {
-            if ($validated['name'] == 'DoError') {
-                return response('Error for Development', 200);
+        if (app()->environment(['local','dev'])){
+            if ($validated['name'] == 'DoError'){
+                return response('Error for Development',200);
             }
         }
 
         $randomString = "";
         do {
             $randomString = Str::random(15);
-        } while (BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
+        }while(BluePrint::where('url_string', '=', $randomString)->count() + BasicSurvey::where('url_string', '=', $randomString)->count() != 0);
         $survey = BluePrint::create([
             'owner_id' => Auth::id(),
             'survey_name' => $validated['name'],
@@ -118,17 +116,18 @@ class SurveyController extends Controller
         ]);
 
         $Questions = $request['questions'];
-        foreach ($Questions as $question) {
+        foreach ($Questions as $question){
             $BaseQuestion = $survey->questions()->create();
-            if ($question['type'] == 1) {
-                $toSave = new TerminQuestion([
+            if ($question['type'] == 1){
+                $toSave= new TerminQuestion([
                     'name' => $question['name']
                 ]);
                 $QuestionInDB = $BaseQuestion->terminquestion()->save($toSave);
                 foreach ($question['options'] as $option) {
-                    if ($option['datetime'] == null || $option['duration'] == null) {
+                    if ($option['datetime'] == null || $option['duration'] == null){
 
-                    } else {
+                    }
+                    else{
                         $Termin = new Termin([
                             'time' => $option['datetime'],
                             'duration' => $option['duration']
@@ -140,28 +139,27 @@ class SurveyController extends Controller
         }
 
 
-        return response($survey, 201);
+        return response($survey,201);
     }
 
-    public function fill(Request $request, $surveyString)
-    {
-        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0) {
+    public function fill(Request $request,$surveyString){
+        if (BasicSurvey::where('url_string', '=', $surveyString)->count() == 0){
             abort(404);
         }
         return Inertia::render('AnswerBasicSurvey/Container');
     }
-
-    public function getSurvey(Request $request) {
+    public function getSurvey(Request $request){
         $validated = $request->validate([
             'surveyString' => 'required',
         ]);
         return BasicSurvey::where('url_string', '=', $validated['surveyString'])->with('user')
+
         ->with('questions')->with('questions.terminquestion')->with('questions.terminquestion.termins')->with('questions.confidencevotequestion')->with('questions.checkboxquestion')
             ->with('questions.checkboxquestion.selections')->first();
+
     }
 
     public function answerSurvey(Request $request){
-        //return response($request, 404);
         $validated = $request->validate([
             'confidenceAnswers' => 'nullable',
             'terminAnswers' => 'nullable',

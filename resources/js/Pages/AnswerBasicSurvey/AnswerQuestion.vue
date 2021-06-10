@@ -1,12 +1,12 @@
 <template>
 
     <div class="flex flex-col mb-4 md:mx-10">
-        <div class="mb-2 text-grey-darkest">{{question.name}}</div>
+        <div class="mb-2 text-grey-darkest">{{question?.name}}</div>
 
         <div class="flex flex-col mb-4 md:mx-5 space-y-6" >
 
             <div v-if="question['terminquestion']">
-                <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)">
+                <AnswerTerminQuestion :question="question['terminquestion']" :answer="answers" @CheckboxTicked="$emit('CheckboxTicked',$event)" :isDisabled="isDisabled">
 
                 </AnswerTerminQuestion>
             </div>
@@ -38,7 +38,7 @@ import AnswerCheckboxQuestion from "@/Pages/AnswerBasicSurvey/AnswerCheckboxQues
 export default {
     name: "AnswerQuestion",
     components: {AnswerCheckboxQuestion, AnswerTerminQuestion, AnswerConfidenceQuestion},
-    props: ['question', 'answer'],
+    props: ['question', 'answer','isDisabled','answers'],
     emits: ['CheckboxTicked', 'ConfidenceValue', 'CheckboxAnswerTicked'],
     methods: {
 

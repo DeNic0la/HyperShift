@@ -90,7 +90,6 @@
 
 <script>
 import AppLayout from "../../Layouts/AppLayout";
-import ActionMessage from "../../Jetstream/ActionMessage";
 import ConfirmationModal from "../../Jetstream/ConfirmationModal";
 import DialogModal from "../../Jetstream/DialogModal";
 import QuestionManager from "./QuestionManager";
@@ -100,7 +99,6 @@ export default {
         QuestionManager,
         DialogModal,
         ConfirmationModal,
-        ActionMessage,
         AppLayout,
     },
     data: function () {

@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyHostController;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,9 +23,6 @@ use Inertia\Inertia;
 Route::get('/', [HomeController::class , 'show'])->name('dashboard');
 Route::get('/validateSurvey', [HomeController::class , 'validateJoinCode']);
 
-Route::get('/dashboard', function () {
-    abort(404);
-});
 
 Route::get('/result', [HomeController::class , 'result'])->name('result');
 
@@ -33,13 +31,13 @@ Route::get('/create', function () {
 })->name('create');
 Route::get('/survey/fill/{surveyString}', [SurveyController::class , 'fill'])->name('fill');
 
-Route::post('/createSurvey',[SurveyController::class , 'create']);
-Route::post('/createBlueprint',[SurveyController::class , 'createBluePrint']);
+Route::post('/createSurvey',[SurveyController::class , 'create'])->name('createBasicSurvey');
+Route::post('/createBlueprint',[SurveyController::class , 'createBluePrint'])->name('createBluePrint');
 
-Route::get('/getSurvey',[SurveyController::class , 'getSurvey']);
+Route::get('/getSurvey',[SurveyController::class , 'getSurvey'])->name('getBasicSurvey');
 
 
-Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey']);
+Route::post('/answerSurvey',[SurveyController::class , 'answerSurvey'])->name('answerBasicSurvey');
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/MySurveys', function () {
@@ -56,4 +54,15 @@ Route::get('/getResults',[SurveyController::class , 'getResults']);
 Route::get('/host/{bluePrintString}', [SurveyHostController::class , 'start'])->name('host');
 Route::get('/getBluePrint',[SurveyHostController::class , 'getBluePrint'])->name('bpInfo');
 Route::get('/runLobby',[SurveyHostController::class , 'runLobby'])->name('runLobby');
+Route::post('/host/update',[SurveyHostController::class , 'updateQuestion'])->name('updateQuestion');
+Route::post('/host/end',[SurveyHostController::class , 'endLobby'])->name('endLobby');
+//Join
+Route::get('/join/{Key}', [SurveyHostController::class , 'join'])->name('join');
+Route::get('/leave/{Key}', [SurveyHostController::class , 'leave'])->name('leave');
+Route::get('/live/update', [SurveyHostController::class , 'update'])->name('update');
+Route::get('/live/question', [SurveyHostController::class , 'question'])->name('question');
+Route::post('/live/answer', [SurveyHostController::class , 'answer'])->name('answer');
+
+//Home
+Route::get('/validateKey',[HomeController::class , 'validateJoinKey'])->name('validateKey');
 
