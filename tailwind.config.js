@@ -16,10 +16,10 @@ module.exports = {
             },
             colors: {
                 create: {
-                    DEFAULT: '#4A732E',
-                    hover: '#356517',
-                    border: '#215600',
-                    boarderhover: '#356517',
+                    DEFAULT: '#55930a',
+                    hover: '#498d1f',
+                    border: '#2e7203',
+                    boarderhover: '#3e781a',
                 },
                 answer: {
                     DEFAULT: '#F36423',

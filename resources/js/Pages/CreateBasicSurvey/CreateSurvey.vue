@@ -28,16 +28,10 @@
             </template>
 
             <template #content>
-
-                <div class="relative text-gray-600 focus-within:text-gray-400">
-
-                    <input type="text" id="copyValue" :value="toCopy" class="py-2 text-sm rounded-md w-2/3 pl-2 focus:outline-none focus:bg-white focus:text-gray-900">
-                    <button @click="copyCode" :class="buttonStyles" class="font-semibold py-2 px-4 ml-5 border rounded">
-                        {{buttonText}}
-                    </button>
-
+                <div class="h-8">
+                    <CopyLink :isBluePrint="createdBluePrint" :url_string="url_string" :showResultBtn="false">
+                    </CopyLink>
                 </div>
-
             </template>
 
             <template #footer>
@@ -93,6 +87,7 @@ import AppLayout from "../../Layouts/AppLayout";
 import ConfirmationModal from "../../Jetstream/ConfirmationModal";
 import DialogModal from "../../Jetstream/DialogModal";
 import QuestionManager from "./QuestionManager";
+import CopyLink from "@/Pages/CopyLink";
 export default {
     name: "CreateSurvey",
     components: {
@@ -100,6 +95,7 @@ export default {
         DialogModal,
         ConfirmationModal,
         AppLayout,
+        CopyLink
     },
     data: function () {
         return{
@@ -107,8 +103,8 @@ export default {
             errors: [],
             showMessage: false,
             url_string: "",
+            createdBluePrint: false,
             creatingFailed: false,
-            toCopy: "",
             buttonStyles: {
                 'bg-transparent':true,
                 'hover:bg-answer-hover':true,
@@ -138,9 +134,9 @@ export default {
                         localStorage.removeItem('surveyName');
                         localStorage.removeItem('questions');
                         console.log(response.data['url_string']);
+                        this.createdBluePrint = pressedButton === 2;
                         this.url_string = response.data['url_string'];
                         this.showMessage = true;
-                        this.toCopy = document.getElementById("baseURL").getAttribute('content') + (pressedButton === 1 ? '/survey/fill/':'/host/' )+this.url_string;
                     }else{
                         this.creatingFailed = true;
                         setTimeout(() => {
@@ -162,32 +158,10 @@ export default {
         goHome(){
             window.location.href = '/'
         },
-        copyCode(){
-            //this.toCopy  =
-            let testingCodeToCopy = document.querySelector('#copyValue')
-            testingCodeToCopy.select()
-
-            try {
-                var successful = document.execCommand('copy');
-                var msg = successful ? 'successful' : 'unsuccessful';
-
-                this.buttonStyles = this.negateAllValues(this.buttonStyles);
-                this.buttonText = "Text Kopiert";
-                setTimeout(() => {
-                    this.buttonStyles = this.negateAllValues(this.buttonStyles);
-                    this.buttonText = "Kopieren";
-                }, 3*1000)
-
-            } catch (err) {
-                alert('Oops, unable to copy');
-            }
-
-            /* unselect the range */
-            window.getSelection().removeAllRanges()
-        },negateAllValues(obj){
+        negateAllValues(obj){
             Object.keys(obj).forEach(function(key){ obj[key] = !obj[key] });
             return obj;
-        }
+        },
     },
     mounted() {
         if (localStorage.getItem('questions')){

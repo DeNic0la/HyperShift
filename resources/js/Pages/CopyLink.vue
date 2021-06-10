@@ -6,7 +6,7 @@
 
             <div class="px-6">
                 <div v-if="showCopyUrlBtn === true">
-                    <button @click="copy(1)" class="font-semibold py-2 px-2 text-white border rounded w-100% border-answer-border hover:border-answer-boarderhover bg-answer hover:bg-answer-hover">
+                    <button @click="copy(1)" class="font-semibold py-2 px-2 text-white border rounded w-100% " :class="copyButtonClass">
                         {{copyUrlButtonText}}
                     </button>
                 </div>
@@ -14,7 +14,7 @@
 
             <div class="px-6">
                 <div v-if="showCopyStringBtn === true">
-                    <input style="position:absolute;left: -999em;" readonly type="text" :id="'copyValueString'" :value="toCopyString" class="py-2 text-sm rounded-md w-100% pl-2 focus:outline-none focus:bg-white focus:text-gray-900">
+                    <input style="position:absolute;left: -999em;" readonly type="text" :id="'copyValueString'" :value="url_string" class="py-2 text-sm rounded-md w-100% pl-2 focus:outline-none focus:bg-white focus:text-gray-900">
                     <button @click="copy(2)" class="font-semibold py-2 px-2 text-white border rounded w-100% border-code-border hover:border-code-boarderhover bg-code hover:bg-code-hover ">
                         {{copyStringButtonText}}
                     </button>
@@ -53,6 +53,10 @@ export default {
         showCopyStringBtn: {
             type: Boolean,
             default: true
+        },
+        isBluePrint: {
+            type: Boolean,
+            default: false
         }
     },
     data: function () {
@@ -60,9 +64,7 @@ export default {
             copyUrlButtonText: "URL kopieren",
             copyStringButtonText: "Code kopieren",
             resultButtonText: "Resultate",
-            toCopyString: this.url_string,
-            toCopyURL: this.toCopyURL = document.getElementById("baseURL").getAttribute('content') + '/survey/fill/'+this.url_string,
-            resultsLocation: document.getElementById("baseURL").getAttribute('content') + '/survey/results/'+this.url_string,
+            baseUrl: "",
         }
     },
     methods: {
@@ -73,6 +75,7 @@ export default {
             if(value === 1) {
                 let testingCodeToCopy = document.querySelector('#copyValueUrl' + this.id);
                 testingCodeToCopy.select();
+                console.log(this.toCopyURL);
             }
             if(value === 2){
                 let testingCodeToCopy = document.querySelector('#copyValueString');
@@ -92,6 +95,23 @@ export default {
         },negateAllValues(obj){
             Object.keys(obj).forEach(function(key){ obj[key] = !obj[key] });
             return obj;
+        }
+    },
+    mounted() {
+        this.baseUrl = document.getElementById("baseURL").getAttribute('content');
+    },
+    computed: {
+        toCopyURL() {
+            return this.baseUrl + (this.isBluePrint ? '/host/' : '/survey/fill/') + this.url_string;
+        },
+        resultsLocation() {
+            return this.baseUrl + '/survey/results/' + this.url_string;
+        },
+        copyButtonClass(){
+            return {
+                'bg-answer border-answer-border hover:border-answer-boarderhover hover:bg-answer-hover': !this.isBluePrint,
+                'bg-host border-host-border hover:border-host-boarderhover hover:bg-host-hover': this.isBluePrint,
+            }
         }
     }
 }
