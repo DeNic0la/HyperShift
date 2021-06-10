@@ -82,7 +82,7 @@ export default {
         sortCheckbox(answers){
             let results = {};
             this.survey.questions.forEach(question => {
-                if(question.hasOwnProperty("checkboxquestion")){
+                if(question.hasOwnProperty("checkboxquestion") && question.checkboxquestion !== null){
                     question.checkboxquestion.selections.forEach(selection => {
                         results[selection.id] = {content: selection.content, count: 0};
                     })
