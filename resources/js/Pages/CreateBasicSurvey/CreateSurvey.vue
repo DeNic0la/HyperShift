@@ -157,9 +157,11 @@ export default {
 
         },
         validateFields(){
+            if(this.surveyName === ""){
+                this.errors.push("Sie müssen einen Umfrage-Namen definieren")
+            }
             this.questions.forEach(question => {
                 if (question.type === "1") {
-                    console.info("error");
                     question.options.forEach(option => {
                         if (question.name === "") {
                             this.errors.push("Sie müssen einen Fragesatz formulieren")
