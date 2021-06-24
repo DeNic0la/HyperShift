@@ -184,7 +184,7 @@
                         <div class="mt-3 space-y-1">
                             <div v-if="$page.props.user">
                                 <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
-                                    Profile
+                                    Profil
                                 </jet-responsive-nav-link>
 
                                 <jet-dropdown-link :href="route('MySurveys')">
