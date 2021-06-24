@@ -125,24 +125,9 @@ export default {
             this.errors = [];
             if (this.validateFields() && (pressedButton === 1 || pressedButton === 2)){
                 const url = pressedButton === 1 ? '/createSurvey': '/createBlueprint';
+                console.log(this.errors);
 
-                this.questions.forEach(question => {
-                    question.options.forEach(option => {
-                        if(option.type === 1){
-                            if(option.duration <= "0"){
-                                this.errors.push("Die Options-Dauer soll länger als 0 Minuten sein")
-                            }
-                        }
-                        if(option.type === 2){
-
-                        }
-                        if(option.type === 3){
-
-                        }
-                    })
-                })
-
-                if(this.errors.length == null) {
+                    if(this.errors.length === 0) {
                     axios.post(url, {
                         name: this.surveyName,
                         questions: this.questions,
@@ -170,7 +155,46 @@ export default {
 
         },
         validateFields(){
-            return true;
+            this.questions.forEach(question => {
+                if (question.type === "1") {
+                    console.info("error");
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.duration ===  "0" || option.duration === null) {
+                            this.errors.push("Die Options-Dauer soll länger als 0 Minuten sein")
+                        }
+                        if (option.datetime === null) {
+                            this.errors.push("Es muss ein Datum gewählt werden")
+                        }
+                    })
+                } else if (question.type === "2") {
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.maxValue <= 0) {
+                            this.errors.push("Der Maximal-Wert muss mindestens 1 sein")
+                        }
+                    })
+                } else if (question.type === "3") {
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.content === "" || option.content === null) {
+                            this.errors.push("Formulieren Sie eine Antwort-Möglichkeit")
+                        }
+                    })
+                }
+            })
+            if (this.errors.length === 0) {
+                console.dir(this.errors);
+                return true
+            } else {
+                return false
+            }
         },
         goHome(){
             window.location.href = '/'
