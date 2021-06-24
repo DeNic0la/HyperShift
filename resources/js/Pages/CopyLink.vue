@@ -75,7 +75,6 @@ export default {
             if(value === 1) {
                 let testingCodeToCopy = document.querySelector('#copyValueUrl' + this.id);
                 testingCodeToCopy.select();
-                console.log(this.toCopyURL);
             }
             if(value === 2){
                 let testingCodeToCopy = document.querySelector('#copyValueString');
@@ -86,7 +85,6 @@ export default {
                 var msg = successful ? 'successful' : 'unsuccessful';
 
             } catch (err) {
-                console.log(err)
                 alert('Oops, unable to copy');
             }
 
