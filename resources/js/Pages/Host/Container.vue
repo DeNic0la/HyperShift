@@ -108,7 +108,6 @@ export default {
                     window.location.href = '/';
                 }
             }).catch(error => {
-                console.log(error);
                 setTimeout(this.endSurvey,500)
             })
         },
@@ -147,7 +146,6 @@ export default {
                     this.questionNumberInSync = true;
                 }
             }).catch(error => {
-                console.log(error);
                 setTimeout(this.updateCurrentQuestionToServer,500)
             })
         }

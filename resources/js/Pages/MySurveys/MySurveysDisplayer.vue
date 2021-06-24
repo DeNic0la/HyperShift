@@ -60,7 +60,6 @@ export default {
                 }, 3*1000)
 
             } catch (err) {
-                console.log(err)
                 alert('Oops, unable to copy');
             }
 

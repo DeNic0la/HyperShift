@@ -127,25 +127,27 @@ export default {
             this.errors = [];
             if (this.validateFields() && (pressedButton === 1 || pressedButton === 2)){
                 const url = pressedButton === 1 ? '/createSurvey': '/createBlueprint';
+                console.log(this.errors);
 
-                axios.post(url,{
-                    name: this.surveyName,
-                    questions: this.questions,
-                }).then( response =>{
-                    if (response.status === 201){
-                        localStorage.removeItem('surveyName');
-                        localStorage.removeItem('questions');
-                        console.log(response.data['url_string']);
-                        this.createdBluePrint = pressedButton === 2;
-                        this.url_string = response.data['url_string'];
-                        this.showMessage = true;
-                    }else{
-                        this.creatingFailed = true;
-                        setTimeout(() => {
-                            this.creatingFailed = false;
-                        }, 10*1000)
-                    }
-                });
+                    if(this.errors.length === 0) {
+                    axios.post(url, {
+                        name: this.surveyName,
+                        questions: this.questions,
+                    }).then(response => {
+                        if (response.status === 201) {
+                            localStorage.removeItem('surveyName');
+                            localStorage.removeItem('questions');
+                            this.createdBluePrint = pressedButton === 2;
+                            this.url_string = response.data['url_string'];
+                            this.showMessage = true;
+                        } else {
+                            this.creatingFailed = true;
+                            setTimeout(() => {
+                                this.creatingFailed = false;
+                            }, 10 * 1000)
+                        }
+                    });
+                }
             }
         },
         writeToLocalStorage(){
@@ -155,7 +157,46 @@ export default {
 
         },
         validateFields(){
-            return true;
+            this.questions.forEach(question => {
+                if (question.type === "1") {
+                    console.info("error");
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.duration ===  "0" || option.duration === null) {
+                            this.errors.push("Die Options-Dauer soll länger als 0 Minuten sein")
+                        }
+                        if (option.datetime === null) {
+                            this.errors.push("Es muss ein Datum gewählt werden")
+                        }
+                    })
+                } else if (question.type === "2") {
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.maxValue <= 0) {
+                            this.errors.push("Der Maximal-Wert muss mindestens 1 sein")
+                        }
+                    })
+                } else if (question.type === "3") {
+                    question.options.forEach(option => {
+                        if (question.name === "") {
+                            this.errors.push("Sie müssen einen Fragesatz formulieren")
+                        }
+                        if (option.content === "" || option.content === null) {
+                            this.errors.push("Formulieren Sie eine Antwort-Möglichkeit")
+                        }
+                    })
+                }
+            })
+            if (this.errors.length === 0) {
+                console.dir(this.errors);
+                return true
+            } else {
+                return false
+            }
         },
         goHome(){
             window.location.href = '/'

@@ -23,7 +23,6 @@ export default {
     emits:['questionUpdate'],
     props: ['TerminDetails'],
     mounted() {
-        console.log(this.TerminDetails);
     }
 }
 </script>

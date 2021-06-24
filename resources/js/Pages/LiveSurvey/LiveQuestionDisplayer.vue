@@ -82,7 +82,6 @@ export default {
             })
         },
         updateArray(id){
-            console.log(id);
             if (this.answers.includes(id)){
                 this.answers.splice( this.answers.indexOf(id), 1);
             }

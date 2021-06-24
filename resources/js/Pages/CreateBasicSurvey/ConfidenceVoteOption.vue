@@ -15,7 +15,6 @@ export default {
     emits:['questionUpdate'],
     props: ['Details'],
     mounted() {
-        console.log(this.Details);
     }
 }
 </script>
