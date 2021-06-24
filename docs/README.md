@@ -8,9 +8,10 @@ Dies ist die Dokumentation für unser Projekt "HyperShift". Die Doku dient dazu,
 
 HyperShift ist ein Basislehrjahr-Projekt von Nicola und Luca, welches wir in unserem zweiten Lehrjahr entwickelt haben. Mit HyperShift soll man ganz einfach verschieden Arten von Umfragen erstellen und verschicken können. Dabei können verschiedene Arten von Fragen zur Auswahl stehen wie z.B. Terminfindungsfragen oder Confidence-Votes.
 
-> Diese Dokumentation ist noch in Bearbeitung
-
+> {% hint style="info" %}
+Diese Dokumentation ist noch in Bearbeitung
+{% endhint %}
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzA3OTE5NTk0XX0=
+eyJoaXN0b3J5IjpbLTIxNTc5ODMxNyw3MDc5MTk1OTRdfQ==
 -->
